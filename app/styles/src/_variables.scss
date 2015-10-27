@@ -1,0 +1,50 @@
+// COLORS
+// ======
+
+//Grey
+$color-light:         #ECEFF1;
+$color-muted:         #CFD8DC;
+$color-dark:          #B0BEC5;
+
+//Color
+$color-primary:       #4A90E2;
+$color-secondary:     #263238;
+$color-tertiary:      #508FAF;
+$color-positive:      #00C853;
+$color-negative:      #FF1744;
+$color-text:          $color-secondary;
+
+// UNITS
+// =====
+$base-unit:           8px;
+$sizing-unit:         $base-unit*3;
+$border-radius:       3px;
+$layout-gutter-width: 15px;
+
+// TYPOGRAPHY
+// ==========
+$font-family:         'Helvetica Neue', serif;
+$font-family-alt:     'Helvetica Neue', 'Roboto', 'Segoe UI', sans-serif;
+$font-family-mono:    monospace;
+$font-size:           16px;
+
+$font-body-weight:    300;
+$font-heading-weight: 300;
+
+// ANIMATION
+// =========
+$easing-swift-out:    cubic-bezier(.55,0,.1,1);
+
+// BREAKPOINTS
+// ===========
+$breakpoint-phone:    719px;
+$breakpoint-tablet:   943px;
+$breakpoint-desktop:  944px;
+
+// BUTTONS
+// =======
+$button-background:     transparent;
+$button-color:          $color-primary;
+$button-padding:        15px 30px;
+$button-border:         1px solid $color-primary;
+$button-border-radius:  $border-radius;

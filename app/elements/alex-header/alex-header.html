@@ -1,0 +1,35 @@
+<!--
+========================
+Alex Header (alex-header)
+========================
+
+This is a container element for your app. Feel free to extend.
+
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="alex-header">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <alex-toolbar id="main-header">
+      <span class="title">Collectively Made</span>
+      <button type="button" name="contactUs" class="button-medium">Contact Us</button>
+    </alex-toolbar>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'alex-header',
+
+      properties: {
+      }
+    });
+  })();
+  </script>
+</dom-module>

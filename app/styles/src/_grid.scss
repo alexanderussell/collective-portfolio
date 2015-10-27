@@ -1,0 +1,25 @@
+.container {
+  margin-right: auto;
+  margin-left: auto;
+
+  padding-left:  ($layout-gutter-width);
+  padding-right: ($layout-gutter-width);
+  width: 100%;
+
+  @media (min-width: $breakpoint-tablet) {
+    width: 940px + $layout-gutter-width;
+  }
+  @media (min-width: $breakpoint-desktop) {
+    width: 1140px + $layout-gutter-width;
+  }
+}
+
+.container-fluid:after,
+.container-fluid:before,
+.container:after,
+.container:before,
+.row:after,
+.row:before {
+    display: table;
+    content: " ";
+}

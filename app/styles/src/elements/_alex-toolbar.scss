@@ -1,0 +1,11 @@
+alex-toolbar {
+  background: #fff;
+  color: $color-text;
+
+  &#main-header {
+    .toolbar-items {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}

@@ -1,0 +1,72 @@
+body {
+  font-family: $font-family;
+  font-size: $font-size;
+  font-weight: $font-body-weight;
+  color: $color-text;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $color-text;
+  font-family: $font-family;
+  font-weight: $font-heading-weight;
+}
+
+h1 span, h2 span, h3 span {
+  font-weight: 300;
+  font-size: 1rem;
+}
+
+h1, h2, h3, h4, h5 {
+  margin-bottom: $base-unit;
+}
+
+p {
+  margin-bottom: $sizing-unit;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+}
+
+/* Text Modifiers */
+.text-small {
+  font-size: 80%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-ellipsis {
+  @include ellipsis();
+}
+
+/* Text Colors */
+.color-primary {
+  color: $color-primary !important;
+}
+
+.color-positive {
+  color: $color-positive !important;
+}
+
+.color-negative {
+  color: $color-negative !important;
+}
+
+.color-dark {
+  color: $color-dark !important;
+}
+
+.color-muted {
+  color: $color-muted !important;
+}
+
+.color-white {
+  color: #fff !important;
+}

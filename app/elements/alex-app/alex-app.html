@@ -1,0 +1,44 @@
+<!--
+========================
+Alex App (alex-app)
+========================
+
+This is a container element for your app. Feel free to extend.
+
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="alex-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      :host > .container {
+        min-height: 100vh;
+      }
+    </style>
+
+    <div class="container" layout="column">
+      <alex-header class="padding-y"></alex-header>
+      <div flex>
+        <app-router>
+          <app-route path="/" import="/elements/_pages/page-home/page-home.html"></app-route>
+        </app-router>
+      </div>
+      <alex-footer></alex-footer>
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'alex-app',
+
+      properties: {
+      }
+    });
+  })();
+  </script>
+</dom-module>

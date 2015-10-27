@@ -1,0 +1,34 @@
+<!--
+========================
+Alex Footer (alex-footer)
+========================
+
+This is a container element for your app. Feel free to extend.
+
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="alex-footer">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div layout="row" class="padding-y">
+      <div class="text-small color-muted text-center" flex>&copy; 2015 The Collective</div>
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'alex-footer',
+
+      properties: {
+      }
+    });
+  })();
+  </script>
+</dom-module>

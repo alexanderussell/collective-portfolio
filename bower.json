@@ -1,0 +1,41 @@
+{
+  "name": "alex-boilerplate",
+  "version": "0.1.1",
+  "authors": [
+    "NAME <name@example.com>"
+  ],
+  "keywords": [
+    "app",
+    "alex",
+    "polymer"
+  ],
+  "license": "MIT",
+  "overrides": {
+    "polymer": {
+      "main": " "
+    },
+    "webcomponentsjs": {
+      "main": "webcomponents-lite.js"
+    },
+    "iron-flex-layout": {
+      "main": [
+        "iron-flex-layout.html",
+        "classes/iron-flex-layout.html"
+      ]
+    },
+    "alex-flex-layout": {
+      "main": [
+        "alex-flex-layout.html",
+        "classes/alex-flex-layout.html"
+      ]
+    }
+  },
+  "dependencies": {
+    "alex-flex-layout": "AlexFramework/alex-flex-layout",
+    "alex-style": "AlexFramework/alex-style",
+    "polymer": "Polymer/polymer#^1.1.0",
+    "alex-toolbar": "AlexFramework/alex-toolbar",
+    "neon-animation": "PolymerElements/neon-animation#~1.0.7",
+    "app-router": "~2.6.1"
+  }
+}

@@ -1,0 +1,29 @@
+// =================\
+// ALEX-STYLE THEME \
+// =================\
+//
+// Use this file as an entry point to styling your app. Alex is powered by
+// a large number of variables which can be easily overwritten to dramatically
+// change the look of an app with only a few modifications.
+//
+// GETTING STARTED
+// ===============
+// Visit the URL below for a list of available variables and their defaults.
+//
+// See: https://github.com/AlexFramework/alex-style/blob/master/scss/_variables.scss
+
+// IMPORT ALEX
+// ===========
+@import '../../bower_components/alex-style/scss/all';
+
+// BEGIN THEME
+// ===========
+@import 'variables';
+@import 'base';
+@import 'grid';
+@import 'typography';
+
+// ELEMENTS
+// ===========
+@import 'elements/alex-toolbar';
+@import 'elements/alex-button';

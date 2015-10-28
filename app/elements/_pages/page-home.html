@@ -1,0 +1,41 @@
+<!--
+========================
+Page: Home (page-home)
+========================
+
+This is a container element for your app. Feel free to extend.
+
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="page-home">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <alex-hero>
+      A collective of creators <br/>
+      that solve problems through <br/>
+      creative uses of technology
+    </alex-hero>
+    <alex-project-showcase title="Data Viewer" href="/portfolio/itemId">
+      A data viewing tool <br/>
+      that allows quality assurance staff <br/>
+      to spend less time doing analysis
+    </alex-project-showcase>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'page-home',
+
+      properties: {
+      }
+    });
+  })();
+  </script>
+</dom-module>

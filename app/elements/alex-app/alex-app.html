@@ -22,9 +22,12 @@ This is a container element for your app. Feel free to extend.
     <div class="container" layout="column">
       <alex-header class="padding-y"></alex-header>
       <div flex>
-        <app-router>
-          <app-route path="/" import="/elements/_pages/page-home/page-home.html"></app-route>
+        <!-- Routes -->
+        <app-router mode="pushstate">
+          <app-route path="portfolio/:id" import="/elements/_pages/page-portfolio-item.html"></app-route>
+          <app-route path="/" import="/elements/_pages/page-home.html"></app-route>
         </app-router>
+        <!-- End Routes -->
       </div>
       <alex-footer></alex-footer>
     </div>

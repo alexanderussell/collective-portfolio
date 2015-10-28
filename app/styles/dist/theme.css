@@ -174,6 +174,16 @@ a {
   color: #fff !important;
 }
 
+.list-no-style {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list-tags li {
+  margin: 0 8px 8px 0;
+}
+
 .container {
   margin-right: auto;
   margin-left: auto;
@@ -202,17 +212,26 @@ a {
   content: " ";
 }
 
+.layout-gutters .flex, .layout-gutters [flex] {
+  margin-right: 15px;
+}
+.layout-gutters .flex:last-child, .layout-gutters [flex]:last-child {
+  margin-right: 0;
+}
+
 body {
-  font-family: "Helvetica Neue", serif;
+  font-family: "Lato", "Helvetica Neue", serif;
   font-size: 16px;
   font-weight: 300;
   color: #263238;
+  line-height: 24px;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: #263238;
-  font-family: "Helvetica Neue", serif;
-  font-weight: 300;
+  font-family: "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+  font-weight: 600;
+  line-height: 1.1em;
 }
 
 h1 span, h2 span, h3 span {
@@ -224,18 +243,36 @@ h1, h2, h3, h4, h5 {
   margin-bottom: 8px;
 }
 
+h4 {
+  color: #CFD8DC;
+  font-family: "Lato", "Helvetica Neue", serif;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
 p {
-  margin-bottom: 24px;
+  margin: 0 0 24px;
 }
 
 a {
+  border-bottom: 1px solid #4A90E2;
   color: #4A90E2;
   text-decoration: none;
+}
+
+::selection {
+  background: #4A90E2;
+  color: #fff;
 }
 
 /* Text Modifiers */
 .text-small {
   font-size: 80%;
+}
+
+.text-hero {
+  font-size: 150%;
+  line-height: 1.2em;
 }
 
 .text-center {
@@ -253,6 +290,10 @@ a {
   text-overflow: ellipsis;
   white-space: nowrap;
   word-wrap: normal;
+}
+
+.text-condensed {
+  font-family: "HelveticaNeue-CondensedBold";
 }
 
 /* Text Colors */
@@ -280,6 +321,10 @@ a {
   color: #fff !important;
 }
 
+.zframe-1 {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
 alex-toolbar {
   background: #fff;
   color: #263238;
@@ -288,17 +333,37 @@ alex-toolbar#main-header .toolbar-items {
   padding-left: 0;
   padding-right: 0;
 }
+alex-toolbar a {
+  border: none;
+  color: #263238;
+  text-decoration: none;
+}
+alex-toolbar a:hover {
+  color: #4A90E2;
+}
 
 button,
 .alex-button {
-  background: transparent;
+  background-color: transparent;
   border: 1px solid #4A90E2;
-  border-radius: 3px;
+  border-radius: 24px;
   color: #4A90E2;
   cursor: pointer;
+  display: inline-block;
   line-height: 1;
   padding: 15px 30px;
   text-transform: uppercase;
+}
+button.button-secondary,
+.alex-button.button-secondary {
+  border-color: #CFD8DC;
+  color: #CFD8DC;
+}
+button.button-secondary:hover,
+.alex-button.button-secondary:hover {
+  background-color: transparent;
+  border-color: #263238;
+  color: #263238;
 }
 button.button-small,
 .alex-button.button-small {
@@ -307,4 +372,34 @@ button.button-small,
 button.button-medium,
 .alex-button.button-medium {
   padding: 12px 22px;
+}
+button:hover, button:focus,
+.alex-button:hover,
+.alex-button:focus {
+  background-color: #4A90E2;
+  color: #fff;
+}
+button.button-alternate-1,
+.alex-button.button-alternate-1 {
+  background-color: transparent;
+  border: none;
+  border-bottom: 5px solid #CFD8DC;
+  border-radius: 0px;
+  color: #CFD8DC;
+  font-weight: bold;
+  padding: 6px 0;
+}
+button.button-alternate-1:hover,
+.alex-button.button-alternate-1:hover {
+  border-color: #4A90E2;
+  color: #4A90E2;
+}
+
+.alex-button:not(li) + .alex-button {
+  margin-left: 8px;
+}
+
+alex-project-showcase .project-title {
+  color: #4A90E2;
+  font-family: "HelveticaNeue-CondensedBold";
 }

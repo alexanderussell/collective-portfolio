@@ -23,13 +23,15 @@ $layout-gutter-width: 15px;
 
 // TYPOGRAPHY
 // ==========
-$font-family:         'Helvetica Neue', serif;
-$font-family-alt:     'Helvetica Neue', 'Roboto', 'Segoe UI', sans-serif;
-$font-family-mono:    monospace;
-$font-size:           16px;
+$font-family:           'Lato', 'Helvetica Neue', serif;
+$font-family-heading:  'Helvetica Neue', 'Roboto', 'Segoe UI', sans-serif;
+$font-family-condensed: 'HelveticaNeue-CondensedBold';
+$font-family-mono:      monospace;
+$font-size:             16px;
+$line-height:           $sizing-unit;
 
 $font-body-weight:    300;
-$font-heading-weight: 300;
+$font-heading-weight: 600;
 
 // ANIMATION
 // =========
@@ -43,8 +45,9 @@ $breakpoint-desktop:  944px;
 
 // BUTTONS
 // =======
-$button-background:     transparent;
-$button-color:          $color-primary;
-$button-padding:        15px 30px;
-$button-border:         1px solid $color-primary;
-$button-border-radius:  $border-radius;
+$button-background:       transparent;
+$button-background-hover: $color-primary;
+$button-color:            $color-primary;
+$button-padding:          15px 30px;
+$button-border:           1px solid $color-primary;
+$button-border-radius:    24px;

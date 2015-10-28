@@ -36,6 +36,9 @@
     "polymer": "Polymer/polymer#^1.1.0",
     "alex-toolbar": "AlexFramework/alex-toolbar",
     "neon-animation": "PolymerElements/neon-animation#~1.0.7",
-    "app-router": "~2.6.1"
+    "app-router": "~2.6.1",
+    "pushstate-anchor": "~0.3.2",
+    "sc-swiper": "*",
+    "iron-image": "PolymerElements/iron-image#~1.0.2"
   }
 }

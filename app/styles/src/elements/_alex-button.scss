@@ -1,13 +1,25 @@
 button,
 .alex-button {
-  background: $button-background;
+  background-color: $button-background;
   border: $button-border;
   border-radius: $button-border-radius;
   color: $button-color;
   cursor: pointer;
+  display: inline-block;
   line-height: 1;
   padding: $button-padding;
   text-transform: uppercase;
+
+  &.button-secondary {
+    border-color: $color-muted;
+    color: $color-muted;
+
+    &:hover {
+      background-color: transparent;
+      border-color: $color-text;
+      color: $color-text;
+    }
+  }
 
   &.button-small {
     padding: 6px 12px;
@@ -16,4 +28,28 @@ button,
   &.button-medium {
     padding: 12px 22px;
   }
+
+  &:hover, &:focus {
+    background-color: $button-background-hover;
+    color: #fff;
+  }
+
+  &.button-alternate-1 {
+    background-color: transparent;
+    border: none;
+    border-bottom: 5px solid $color-muted;
+    border-radius: 0px;
+    color: $color-muted;
+    font-weight: bold;
+    padding: 6px 0;
+
+    &:hover {
+      border-color: $color-primary;
+      color: $color-primary;
+    }
+  }
+}
+
+.alex-button:not(li) + .alex-button {
+  margin-left: $base-unit;
 }

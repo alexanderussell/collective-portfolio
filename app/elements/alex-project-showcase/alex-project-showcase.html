@@ -1,0 +1,51 @@
+<!--
+========================
+Alex Project Showcase (alex-project-showcase)
+========================
+
+This is a container element for your app. Feel free to extend.
+
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="alex-project-showcase">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .project-title {
+        font-size: 144px;
+        text-transform: uppercase;
+      }
+
+      .project-desc {
+
+      }
+    </style>
+    <h2 class="project-title">{{title}}</h2>
+    <div layout="row">
+      <div flex></div>
+      <p class="project-desc text-hero" flex>
+        <content></content>
+      </p>
+    </div>
+    <div layout="flex" layout-align="center center">
+      <a is="pushstate-anchor" href="{{href}}" class="alex-button button-alternate-1 project-link">View Project</a>
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'alex-project-showcase',
+
+      properties: {
+        title: String,
+        href: String
+      }
+    });
+  })();
+  </script>
+</dom-module>

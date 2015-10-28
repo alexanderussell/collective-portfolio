@@ -23,6 +23,9 @@ module.exports = function (grunt) {
     }
   };
 
+  // Load historyMiddleware to serve SPA.
+  var historyMiddleware = require('connect-history-api-fallback');
+
   // Set up some sensible defaults for our tasks
   grunt.initConfig({
     appConfig: appConfig,
@@ -65,7 +68,8 @@ module.exports = function (grunt) {
         // https: true,
         watchTask: true,
         server: {
-          baseDir: '<%= appConfig.paths.app %>'
+          baseDir: '<%= appConfig.paths.app %>',
+          middleware: [ historyMiddleware() ]
         }
       }
     },

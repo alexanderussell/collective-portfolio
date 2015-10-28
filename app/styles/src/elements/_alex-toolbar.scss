@@ -8,4 +8,14 @@ alex-toolbar {
       padding-right: 0;
     }
   }
+
+  a {
+    border: none;
+    color: $color-text;
+    text-decoration: none;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
 }

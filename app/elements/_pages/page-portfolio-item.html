@@ -1,0 +1,73 @@
+<!--
+========================
+Page: Home (page-home)
+========================
+
+This is a container element for your app. Feel free to extend.
+
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="page-portfolio-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      #project-media, .project-image-single {
+        height: 350px;
+        width: 100%;
+      }
+    </style>
+    <alex-hero>
+      A data viewing tool <br/>
+      that allows quality assurance staff <br/>
+      to spend less time doing analysis
+    </alex-hero>
+    <div id="project-media" class="margin-y zframe-1">
+      <iron-image class="project-image-single" fade preload sizing="cover" height="250px" width="100%" src="http://lorempixel.com/1280/720"></iron-image>
+    </div>
+    <div layout="row" class="layout-gutters">
+      <div flex="8">
+        <h4>Challenge</h4>
+        <div id="project-challenge">
+          <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+          <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then.</p>
+        </div>
+      </div>
+      <div flex="4">
+        <h4>Client</h4>
+        <p id="project-client">Integrated Life Choices</p>
+        <ul class="list-no-style list-tags" id="project-tags">
+          <li class="alex-button button-small button-secondary">UI/UX</li>
+          <li class="alex-button button-small button-secondary">Mobile Development</li>
+          <li class="alex-button button-small button-secondary">Database Architecture</li>
+        </ul>
+        <h4>Collaborators</h4>
+        <ul class="list-no-style">
+          <li>Hayden Gascoigne</li>
+          <li>Alex Russell</li>
+        </ul>
+      </div>
+    </div>
+    <div layout="row" layout-align="center center">
+      <div>
+        <a id="project-case-study" href="#" class="alex-button">Read the Case Study</a>
+        <a id="project-link" href="#" class="alex-button">Visit Site</a>
+      </div>
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'page-portfolio-item',
+
+      properties: {
+      }
+    });
+  })();
+  </script>
+</dom-module>

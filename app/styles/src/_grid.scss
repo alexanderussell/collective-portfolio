@@ -23,3 +23,13 @@
     display: table;
     content: " ";
 }
+
+.layout-gutters {
+  .flex, [flex] {
+    margin-right: $layout-gutter-width;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

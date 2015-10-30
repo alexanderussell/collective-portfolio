@@ -15,22 +15,24 @@ This is a container element for your app. Feel free to extend.
         display: block;
       }
       :host > .container {
-        min-height: 100vh;
+        /*min-height: 100vh;*/
       }
     </style>
     <akyral-modal id="collective-contact">
       <alex-contact-modal></alex-contact-modal>
     </akyral-modal>
-    <div class="container" layout="column">
+    <div class="container">
       <alex-header class="padding-y"></alex-header>
-      <div>
-        <!-- Routes -->
-        <app-router mode="pushstate">
-          <app-route path="portfolio/:id" import="/elements/_pages/page-portfolio-item.html"></app-route>
-          <app-route path="/" import="/elements/_pages/page-home.html"></app-route>
-        </app-router>
-        <!-- End Routes -->
-      </div>
+    </div>
+    <div id="main-content">
+      <!-- Routes -->
+      <app-router mode="pushstate">
+        <app-route path="portfolio/:id" import="/elements/_pages/page-portfolio-item.html"></app-route>
+        <app-route path="/" import="/elements/_pages/page-home.html"></app-route>
+      </app-router>
+      <!-- End Routes -->
+    </div>
+    <div class="container">
       <alex-footer></alex-footer>
     </div>
   </template>

@@ -15490,9 +15490,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         display: block;
       }
       :host > .container {
-        min-height: 100vh;
+        /*min-height: 100vh;*/
       }
-    </style><akyral-modal id=collective-contact><alex-contact-modal></alex-contact-modal></akyral-modal><div class=container layout=column><alex-header class=padding-y></alex-header><div><app-router mode=pushstate><app-route path=portfolio/:id import=/elements/_pages/page-portfolio-item.html></app-route><app-route path="/" import=/elements/_pages/page-home.html></app-route></app-router></div><alex-footer></alex-footer></div></template><script>
+    </style><akyral-modal id=collective-contact><alex-contact-modal></alex-contact-modal></akyral-modal><div class=container><alex-header class=padding-y></alex-header></div><div id=main-content><app-router mode=pushstate><app-route path=portfolio/:id import=/elements/_pages/page-portfolio-item.html></app-route><app-route path="/" import=/elements/_pages/page-home.html></app-route></app-router></div><div class=container><alex-footer></alex-footer></div></template><script>
   (function() {
     'use strict';
 
@@ -15589,7 +15589,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         border-color: var(--color, inherit);
         color: var(--color, inherit);
       }
-    </style><h2 class=project-title>{{project.title}}</h2><div layout=row class=project-content><div flex></div><p class="project-desc text-hero" flex><marked-element markdown={{project.description.md}}></marked-element></p></div><div layout=flex layout-align="center center" class=padding-y><a is=pushstate-anchor href={{projectHref}} class="alex-button button-alternate-1 project-link">View Project</a></div></template><script>
+    </style><div layout=row><h2 class=project-title>{{project.title}}</h2></div><div layout=row class=project-content><div flex></div><p class="project-desc text-hero" flex><marked-element markdown={{project.description.md}}></marked-element></p></div><div layout=flex layout-align="center center" class=padding-y><a is=pushstate-anchor href={{projectHref}} class="alex-button button-alternate-1 project-link">View Project</a></div></template><script>
   (function() {
     'use strict';
 

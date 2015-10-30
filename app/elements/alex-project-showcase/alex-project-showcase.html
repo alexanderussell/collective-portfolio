@@ -32,7 +32,9 @@ This is a container element for your app. Feel free to extend.
         color: var(--color, inherit);
       }
     </style>
-    <h2 class="project-title">{{project.title}}</h2>
+    <div layout="row">
+      <h2 class="project-title">{{project.title}}</h2>
+    </div>
     <div layout="row" class="project-content">
       <div flex></div>
       <p class="project-desc text-hero" flex>

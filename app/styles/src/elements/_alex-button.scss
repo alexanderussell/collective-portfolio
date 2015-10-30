@@ -6,7 +6,10 @@ button,
   color: $button-color;
   cursor: pointer;
   display: inline-block;
+  font-size: $font-size;
+  font-family: $font-family;
   line-height: 1;
+  outline: none;
   padding: $button-padding;
   text-transform: uppercase;
 
@@ -23,13 +26,15 @@ button,
 
   &.button-small {
     padding: 6px 12px;
+    @extend .text-small;
   }
 
   &.button-medium {
-    padding: 12px 22px;
+    padding: 9px 22px;
+    @extend .text-small;
   }
 
-  &:hover, &:focus {
+  &:hover {
     background-color: $button-background-hover;
     color: #fff;
   }

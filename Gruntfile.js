@@ -160,7 +160,108 @@ module.exports = function (grunt) {
           debugInfo: false
         }
       }
+    },
+
+    /**
+     * Vulcanize
+     * =========
+     * Concatenates and minifies all elements into one file.
+     */
+    vulcanize: {
+      dist: {
+        options: {
+          inlineCss: true,
+          inlineScripts: true,
+          stripComments: true
+        },
+        files: {
+          '<%= appConfig.paths.dist %>/elements.html': '<%= appConfig.paths.app %>/elements/elements.html'
+        }
+      }
+    },
+
+    /**
+     * CSSMIN
+     * =======
+     * Minifies distribution CSS.
+     */
+    cssmin: {
+      target: {
+        files: [{
+          expand: true,
+          cwd: '<%= appConfig.paths.app %>/styles/dist',
+          src: ['*.css', '!*.min.css'],
+          dest: '<%= appConfig.paths.dist %>/styles/dist'
+        }]
+      }
+    },
+
+    /**
+     * COPY
+     * ====
+     * Copies static files to the distribution directory
+     */
+    copy: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= appConfig.paths.app %>',
+          dest: '<%= appConfig.paths.dist %>',
+          src: [
+            '*.{ico,png,txt}',
+            '.htaccess',
+            '*.html',
+            'images/{,*/}*.{webp}'
+          ]
+        }]
+      }
+    },
+
+    /**
+     * MinifyHTML
+     * ==========
+     * Minifies HTML files.
+     */
+    minifyHtml: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= appConfig.paths.dist %>',
+          src: ['*.html'],
+          dest: '<%= appConfig.paths.dist %>'
+        }]
+      }
+    },
+
+    useminPrepare: {
+      html: '<%= appConfig.paths.app %>/index.html',
+      options: {
+        dest: '<%= appConfig.paths.dist %>',
+        flow: {
+          html: {
+            steps: {
+              js: ['concat', 'uglify']
+              // css: ['cssmin']
+            },
+            post: {}
+          }
+        }
+      }
+    },
+
+    usemin: {
+      html: ['<%= appConfig.paths.dist %>/{,*/}*.html'],
+      js: ['<%= appConfig.paths.dist %>/scripts/{,*/}*.js'],
+      options: {
+        assetsDirs: ['<%= appConfig.paths.dist %>'],
+        blockReplacements: {
+          elements: function (block) {
+            return '<link rel="import" href="' + block.dest + '">';
+          }
+        }
+      }
     }
+
   });
 
   /**
@@ -171,9 +272,23 @@ module.exports = function (grunt) {
 
   // Set up a default task
   grunt.registerTask('default', [
-    'wiredep'
+    'build'
   ]);
 
+  // Run this task to prepare a distribution version of the app folder.
+  grunt.registerTask('build', [
+    'clean:dist',
+    'useminPrepare',
+    'vulcanize:dist',
+    'copy:dist',
+    'cssmin',
+    'concat',
+    'uglify',
+    'usemin',
+    'minifyHtml'
+  ]);
+
+  // Run this task to create a local server for which to develop.
   grunt.registerTask('serve', [
     'clean:server',
     'wiredep',

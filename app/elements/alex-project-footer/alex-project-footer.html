@@ -1,0 +1,37 @@
+<!--
+========================
+Alex Project Footer (alex-project-footer)
+========================
+
+This is a container element for your app. Feel free to extend.
+
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="alex-project-footer">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div layout="row" class="padding-y">
+      <div id="project-previous-link" flex="3"><a is="pushstate-anchor" href="">Previous Project</a></div>
+      <div class="text-center" flex="6">{{project.title}}</div>
+      <div id="project-next-link" class="text-right" flex="3"><a is="pushstate-anchor" href="">Next Project</a></div>
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'alex-project-footer',
+
+      properties: {
+        project: Object
+      }
+    });
+  })();
+  </script>
+</dom-module>

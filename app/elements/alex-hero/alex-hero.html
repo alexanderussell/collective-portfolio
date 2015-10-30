@@ -23,6 +23,7 @@ This is a container element for your app. Feel free to extend.
       }
     </style>
     <h1 class="hero-content">
+      <marked-element markdown="{{content}}"></marked-element>
       <content></content>
     </h1>
   </template>
@@ -34,6 +35,7 @@ This is a container element for your app. Feel free to extend.
       is: 'alex-hero',
 
       properties: {
+        content: String
       }
     });
   })();

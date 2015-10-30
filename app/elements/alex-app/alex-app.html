@@ -18,10 +18,12 @@ This is a container element for your app. Feel free to extend.
         min-height: 100vh;
       }
     </style>
-
+    <akyral-modal id="collective-contact">
+      <alex-contact-modal></alex-contact-modal>
+    </akyral-modal>
     <div class="container" layout="column">
       <alex-header class="padding-y"></alex-header>
-      <div flex>
+      <div>
         <!-- Routes -->
         <app-router mode="pushstate">
           <app-route path="portfolio/:id" import="/elements/_pages/page-portfolio-item.html"></app-route>
@@ -37,11 +39,9 @@ This is a container element for your app. Feel free to extend.
     'use strict';
 
     Polymer({
-      is: 'alex-app',
-
-      properties: {
-      }
+      is: 'alex-app'
     });
+
   })();
   </script>
 </dom-module>

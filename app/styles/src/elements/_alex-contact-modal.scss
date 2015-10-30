@@ -1,0 +1,7 @@
+alex-contact-modal {
+  min-width: 720px;
+
+  @media (max-width: $breakpoint-tablet) {
+    min-width: 100%;
+  }
+}

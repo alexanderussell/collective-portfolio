@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en-US">
 <head>
   <meta charset="utf-8">
   <meta name="description" content="">
@@ -11,14 +11,19 @@
   <!-- Import CSS -->
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="styles/dist/theme.css">
+
+  <!-- build:css(.) styles/dist/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/swiper/dist/css/swiper.css" />
   <!-- endbower -->
+  <!-- endbuild -->
 
   <!-- Import Elements -->
+  <!-- build:elements(.) elements.html -->
   <link rel="import" href="elements/elements.html">
+  <!-- endbuild -->
 
-  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <!-- build:js scripts/webcomponents-lite.min.js -->
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <!-- endbuild -->
 </head>
@@ -27,9 +32,13 @@
   <alex-app></alex-app>
   <!-- End Application Content -->
 
+  <!-- build:js scripts/vendor.js -->
   <!-- bower:js -->
   <script src="bower_components/web-animations-js/web-animations.min.js"></script>
   <script src="bower_components/swiper/dist/js/swiper.js"></script>
+  <script src="bower_components/promise-polyfill/Promise.js"></script>
+  <script src="bower_components/marked/lib/marked.js"></script>
   <!-- endbower -->
+  <!-- endbuild -->
 </body>
 </html>

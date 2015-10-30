@@ -20,11 +20,14 @@ This is a container element for your app. Feel free to extend.
       that solve problems through <br/>
       creative uses of technology
     </alex-hero>
-    <alex-project-showcase title="Data Viewer" href="/portfolio/itemId">
-      A data viewing tool <br/>
-      that allows quality assurance staff <br/>
-      to spend less time doing analysis
-    </alex-project-showcase>
+    <iron-ajax last-response="{{projects}}" auto url="http://content.collectivelymade.com/portfolio?limit=5" handle-as="json"></iron-ajax>
+    <div layout="row">
+      <sc-swiper flex>
+        <template is="dom-repeat" items="{{projects}}">
+          <alex-project-showcase project="{{item}}"></alex-project-showcase>
+        </template>
+      </sc-swiper>
+    </div>
   </template>
   <script>
   (function() {

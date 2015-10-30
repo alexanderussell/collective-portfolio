@@ -17,7 +17,7 @@ This is a container element for your app. Feel free to extend.
     </style>
     <alex-toolbar id="main-header">
       <span class="title"><a is="pushstate-anchor" href="/">Collectively Made</a></span>
-      <button type="button" name="contactUs" class="button-medium">Contact Us</button>
+      <button type="button" on-click="showContactModal" name="contactUs" class="button-medium">Contact Us</button>
     </alex-toolbar>
   </template>
   <script>
@@ -27,7 +27,9 @@ This is a container element for your app. Feel free to extend.
     Polymer({
       is: 'alex-header',
 
-      properties: {
+      showContactModal: function () {
+        console.log('Showing Contact');
+        document.querySelector('#collective-contact').show();
       }
     });
   })();

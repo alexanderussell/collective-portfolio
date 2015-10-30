@@ -1,0 +1,46 @@
+<!--
+========================
+Alex Footer (alex-contact-modal)
+========================
+
+This is a container element for your app. Feel free to extend.
+
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/akyral-modal/akyral-modal-behavior.html">
+
+<dom-module id="alex-contact-modal">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h1 class="text-center margin-bottom">Let's work together</h1>
+    <div class="panel-light padding">
+      <div layout="row" layout-align="center center">
+        <form>
+          <h3>Hey there, what's your name?</h3>
+          <input type="text" name="contactName" value="">
+          <div class="margin-top" layout="row" layout-align="start center">
+            <div flex>
+              <button type="button" name="submitContact" class="alex-button button-medium button-secondary">Next</button>
+            </div>
+            <div class="color-muted text-small">
+              1/3
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'alex-contact-modal'
+    });
+  })();
+  </script>
+</dom-module>

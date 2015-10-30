@@ -4,6 +4,7 @@ body {
   font-weight: $font-body-weight;
   color: $color-text;
   line-height: $line-height;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -11,6 +12,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $font-family-heading;
   font-weight: $font-heading-weight;
   line-height: 1.1em;
+  margin-top: 0;
 }
 
 h1 span, h2 span, h3 span {
@@ -37,6 +39,11 @@ a {
   border-bottom: 1px solid $color-primary;
   color: $color-primary;
   text-decoration: none;
+  @include transition(all .2s ease-in-out);
+
+  &:hover {
+    @include transition(all .2s ease-in-out);
+  }
 }
 
 ::selection {
@@ -64,6 +71,10 @@ a {
 
 .text-ellipsis {
   @include ellipsis();
+}
+
+.text-bold {
+  font-weight: bold;
 }
 
 .text-condensed {

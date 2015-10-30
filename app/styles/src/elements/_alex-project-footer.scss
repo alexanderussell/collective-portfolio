@@ -1,0 +1,14 @@
+alex-project-footer {
+  border: solid $color-muted;
+  border-width: 2px 0;
+  @extend .panel-margin;
+
+  a {
+    border-bottom: none;
+    color: $color-muted;
+
+    &:hover {
+      color: $color-text;
+    }
+  }
+}

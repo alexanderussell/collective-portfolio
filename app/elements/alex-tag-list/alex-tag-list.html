@@ -1,0 +1,45 @@
+<!--
+========================
+Alex Tag List (alex-tag-list)
+========================
+
+This is a container element for your app. Feel free to extend.
+
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="alex-tag-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <ul class="list-no-style list-tags" id="project-tags">
+      <template is="dom-repeat" items="{{tagArray}}">
+        <li class="alex-button button-small button-secondary">{{item}}</li>
+      </template>
+    </ul>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'alex-tag-list',
+
+      properties: {
+        tags: String,
+        tagArray: {
+          type: Array,
+          computed: '_createTagArray(tags)'
+        }
+      },
+
+      _createTagArray: function (tags) {
+        return tags.split(',');
+      }
+    });
+  })();
+  </script>
+</dom-module>

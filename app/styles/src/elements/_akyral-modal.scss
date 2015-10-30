@@ -1,0 +1,9 @@
+akyral-modal {
+  #content {
+    outline: none;
+  }
+
+  &:not([type]), &[type="takeover"] {
+    background: #fff;
+  }
+}

@@ -1,11 +1,11 @@
 .list-no-style {
   list-style: none;
-  margin: 0;
+  margin: 0 0 $sizing-unit;
   padding: 0;
 }
 
 .list-tags {
   li {
-    margin: 0 $base-unit $base-unit 0;
+    margin: 0 ($base-unit - 3px) $base-unit 0;
   }
 }

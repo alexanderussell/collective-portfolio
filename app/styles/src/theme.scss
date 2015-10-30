@@ -23,9 +23,15 @@
 @import 'grid';
 @import 'typography';
 @import 'zframes';
+@import 'panels';
+@import 'forms';
 
 // ELEMENTS
 // ===========
 @import 'elements/alex-toolbar';
 @import 'elements/alex-button';
 @import 'elements/alex-project-showcase';
+@import 'elements/alex-project-footer';
+@import 'elements/akyral-modal';
+@import 'elements/alex-contact-modal';
+@import 'elements/sc-swiper';

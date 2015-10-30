@@ -1,6 +1,33 @@
 alex-project-showcase {
+  padding: $sizing-unit*2 0;
+
   .project-title {
     color: $color-primary;
     font-family: $font-family-condensed;
+    position: relative;
+    top: $sizing-unit*1.5;
+    @include transition(all .2s $easing-swift-out);
+  }
+
+  .project-content {
+    padding: $sizing-unit;
+    @include transition(all .2s $easing-swift-out);
+  }
+
+  .project-content p {
+    margin: 0;
+  }
+
+  &:hover {
+    .project-title {
+      top: 0;
+      @include transition(all .2s $easing-swift-out);
+    }
+
+    .project-content {
+      color: #fff;
+      padding: $sizing-unit*3;
+      @include transition(all .2s $easing-swift-out);
+    }
   }
 }

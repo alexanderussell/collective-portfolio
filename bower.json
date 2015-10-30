@@ -23,6 +23,11 @@
         "classes/iron-flex-layout.html"
       ]
     },
+    "iron-image": {
+      "main": [
+        "iron-image.html"
+      ]
+    },
     "alex-flex-layout": {
       "main": [
         "alex-flex-layout.html",
@@ -39,6 +44,9 @@
     "app-router": "~2.6.1",
     "pushstate-anchor": "~0.3.2",
     "sc-swiper": "*",
-    "iron-image": "PolymerElements/iron-image#~1.0.2"
+    "iron-image": "PolymerElements/iron-image#~1.0.2",
+    "akyral-modal": "~3.0.2",
+    "iron-ajax": "PolymerElements/iron-ajax#~1.0.7",
+    "marked-element": "PolymerElements/marked-element#~1.1.1"
   }
 }

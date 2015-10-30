@@ -11,7 +11,22 @@ alex-project-showcase {
 
   .project-content {
     padding: $sizing-unit;
+    position: relative;
     @include transition(all .2s $easing-swift-out);
+
+    &:before {
+      content: '';
+      display: block;
+      opacity: 0;
+      z-index: 1;
+      @extend .fit;
+      @include transition(opacity .2s $easing-swift-out);
+    }
+
+    .project-desc {
+      position: relative;
+      z-index: 2;
+    }
   }
 
   .project-content p {
@@ -26,8 +41,13 @@ alex-project-showcase {
 
     .project-content {
       color: #fff;
-      padding: $sizing-unit*3;
+      padding: $sizing-unit*8;
       @include transition(all .2s $easing-swift-out);
+
+      &:before {
+        opacity: 1;
+        @include transition(opacity .2s $easing-swift-out);
+      }
     }
   }
 }

@@ -33,3 +33,18 @@
     }
   }
 }
+
+.layout-fill-viewport {
+  height: 100vh;
+  width: 100%;
+
+  &.has-header {
+    height: calc(100vh - 108px);
+    padding-bottom: 108px;
+  }
+
+  &.has-footer {
+    height: calc(100vh - 78px);
+    padding-top: 78px;
+  }
+}

@@ -1,7 +1,18 @@
 sc-swiper {
   cursor: ew-resize;
 
-  .swiper-button-prev, .swiper-button-next {
+  .swiper-container {
+    .swiper-button-prev, .swiper-button-next {
+      padding: $base-unit;
+    }
 
+    .swiper-button-prev {
+      @extend .chevron;
+    }
+
+    .swiper-button-next {
+      transform: rotate(180deg);
+      @extend .chevron;
+    }
   }
 }

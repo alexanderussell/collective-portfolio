@@ -2,9 +2,6 @@
 ========================
 Page: Home (page-home)
 ========================
-
-This is a container element for your app. Feel free to extend.
-
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
@@ -15,14 +12,18 @@ This is a container element for your app. Feel free to extend.
         display: block;
       }
     </style>
-    <alex-hero>
-      A collective of creators <br/>
-      that solve problems through <br/>
-      creative uses of technology
-    </alex-hero>
-    <iron-ajax last-response="{{projects}}" auto url="http://content.collectivelymade.com/portfolio?limit=5" handle-as="json"></iron-ajax>
-    <div layout="row">
-      <sc-swiper flex>
+    <!-- Hero -->
+    <div class="layout-fill-viewport has-header cursor-scroll-down" layout="column" layout-align="center center">
+      <alex-hero>
+        A collective of creators <br/>
+        that solve problems through <br/>
+        creative uses of technology
+      </alex-hero>
+    </div>
+    <!-- End Hero -->
+    <div class="layout-fill-viewport has-footer" layout="row" layout-align="center center">
+      <iron-ajax last-response="{{projects}}" auto url="http://content.collectivelymade.com/portfolio?limit=5" handle-as="json"></iron-ajax>
+      <sc-swiper flex navigation-buttons>
         <template is="dom-repeat" items="{{projects}}">
           <alex-project-showcase project="{{item}}"></alex-project-showcase>
         </template>

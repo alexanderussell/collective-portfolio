@@ -15585,11 +15585,16 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         background-color: var(--color, transparent);
       }
 
+      :host:hover .project-content:before {
+        background-image: var(--bg, '');
+        background-size: cover;
+      }
+
       .project-link {
         border-color: var(--color, inherit);
         color: var(--color, inherit);
       }
-    </style><div layout=row><h2 class=project-title>{{project.title}}</h2></div><div layout=row class=project-content><div flex></div><p class="project-desc text-hero" flex><marked-element markdown={{project.description.md}}></marked-element></p></div><div layout=flex layout-align="center center" class=padding-y><a is=pushstate-anchor href={{projectHref}} class="alex-button button-alternate-1 project-link">View Project</a></div></template><script>
+    </style><div layout=row><div flex=2></div><h2 class=project-title flex=10>{{project.title}}</h2></div><div layout=row class=project-content><div flex></div><p class="project-desc text-hero" flex><marked-element markdown={{project.description.md}}></marked-element></p></div><div layout=flex layout-align="center center" class=padding-y><a is=pushstate-anchor href={{projectHref}} class="alex-button button-alternate-1 project-link">View Project</a></div></template><script>
   (function() {
     'use strict';
 
@@ -15609,6 +15614,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
       _projectChanged: function (value) {
         this.customStyle['--color'] = value.color;
+        this.customStyle['--bg'] = 'url("'+value.backgroundImage+'")';
         Polymer.updateStyles();
       },
 
@@ -15661,7 +15667,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       :host {
         display: block;
       }
-    </style><alex-hero>A collective of creators<br>that solve problems through<br>creative uses of technology</alex-hero><iron-ajax last-response={{projects}} auto url="http://content.collectivelymade.com/portfolio?limit=5" handle-as=json></iron-ajax><div layout=row><sc-swiper flex><template is=dom-repeat items={{projects}}><alex-project-showcase project={{item}}></alex-project-showcase></template></sc-swiper></div></template><script>
+    </style><div class="layout-fill-viewport has-header cursor-scroll-down" layout=column layout-align="center center"><alex-hero>A collective of creators<br>that solve problems through<br>creative uses of technology</alex-hero></div><div class="layout-fill-viewport has-footer" layout=row layout-align="center center"><iron-ajax last-response={{projects}} auto url="http://content.collectivelymade.com/portfolio?limit=5" handle-as=json></iron-ajax><sc-swiper flex navigation-buttons><template is=dom-repeat items={{projects}}><alex-project-showcase project={{item}}></alex-project-showcase></template></sc-swiper></div></template><script>
   (function() {
     'use strict';
 

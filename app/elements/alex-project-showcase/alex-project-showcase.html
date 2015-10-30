@@ -27,13 +27,19 @@ This is a container element for your app. Feel free to extend.
         background-color: var(--color, transparent);
       }
 
+      :host:hover .project-content:before {
+        background-image: var(--bg, '');
+        background-size: cover;
+      }
+
       .project-link {
         border-color: var(--color, inherit);
         color: var(--color, inherit);
       }
     </style>
     <div layout="row">
-      <h2 class="project-title">{{project.title}}</h2>
+      <div flex="2"></div>
+      <h2 class="project-title" flex="10">{{project.title}}</h2>
     </div>
     <div layout="row" class="project-content">
       <div flex></div>
@@ -66,6 +72,7 @@ This is a container element for your app. Feel free to extend.
 
       _projectChanged: function (value) {
         this.customStyle['--color'] = value.color;
+        this.customStyle['--bg'] = 'url("'+value.backgroundImage+'")';
         Polymer.updateStyles();
       },
 

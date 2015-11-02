@@ -8,6 +8,6 @@ var app = express();
 app.use(morgan('dev'));
 app.use(gzippo.staticGzip('' + __dirname));
 app.all('/*', function (req, res, next) {
-  res.sendfile('dist/index.html', {root: __dirname});
+  res.sendfile('index.html', {root: __dirname});
 });
 app.listen(process.env.PORT || 80);

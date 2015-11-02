@@ -30,6 +30,6 @@
     "morgan": "^1.5.0"
   },
   "scripts": {
-    "start": "node web.js"
+    "start": "node dist/web.js"
   }
 }

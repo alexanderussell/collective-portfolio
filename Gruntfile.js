@@ -210,9 +210,16 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
-            'nginx.conf',
+            // 'nginx.conf',
             '*.html',
             'images/{,*/}*.{webp}'
+          ]
+        }, {
+          expand: true,
+          cwd: './',
+          dest: '<%= appConfig.paths.dist %>',
+          src: [
+            'web.js'
           ]
         }]
       }

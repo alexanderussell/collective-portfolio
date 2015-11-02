@@ -24,9 +24,11 @@ This is a container element for your app. Feel free to extend.
     <iron-ajax last-response="{{portfolioItem}}" auto url="{{apiURL}}" handle-as="json"></iron-ajax>
     <div class="container">
       <alex-hero content="{{portfolioItem.0.description.md}}"></alex-hero>
-      <div id="project-media" class="margin-y zframe-1">
-        <iron-image class="project-image-single" fade preload sizing="cover" src="http://lorempixel.com/1280/720"></iron-image>
-      </div>
+      <template is="dom-if" if="{{isSingleImage}}">
+        <div id="project-media" class="margin-y zframe-1">
+          <iron-image class="project-image-single" fade preload sizing="cover" src="{{portfolioItem.0.image}}"></iron-image>
+        </div>
+      </template>
       <div layout="row" class="layout-gutters padding-top">
         <div flex="8" flex-sm="12">
           <h4>Challenge</h4>
@@ -72,11 +74,20 @@ This is a container element for your app. Feel free to extend.
         apiURL: {
           type: String,
           computed: '_getProjectURL(id)'
+        },
+
+        isSingleImage: {
+          type: Boolean,
+          computed: '_isSingleImage(portfolioItem)'
         }
       },
 
       _getProjectURL: function (id) {
         return 'http://content.collectivelymade.com/portfolio?where={"_id": "' + id + '"}';
+      },
+
+      _isSingleImage: function (project) {
+        return project[0].type == 'single-image';
       }
 
     });

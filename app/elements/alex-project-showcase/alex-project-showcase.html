@@ -72,7 +72,7 @@ This is a container element for your app. Feel free to extend.
 
       _projectChanged: function (value) {
         this.customStyle['--color'] = value.color;
-        this.customStyle['--bg'] = 'url("'+value.backgroundImage+'")';
+        this.customStyle['--bg'] = 'url("'+value.backgroundImage.url+'")';
         Polymer.updateStyles();
       },
 

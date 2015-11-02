@@ -27,8 +27,8 @@ This is a container element for your app. Feel free to extend.
     <div id="main-content">
       <!-- Routes -->
       <app-router mode="pushstate">
-        <app-route path="portfolio/:id" import="/elements/_pages/page-portfolio-item.html"></app-route>
-        <app-route path="/" import="/elements/_pages/page-home.html"></app-route>
+        <app-route path="portfolio/:id" element="page-portfolio-item"></app-route>
+        <app-route path="/" element="page-home"></app-route>
       </app-router>
       <!-- End Routes -->
     </div>

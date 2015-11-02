@@ -15492,7 +15492,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       :host > .container {
         /*min-height: 100vh;*/
       }
-    </style><akyral-modal id=collective-contact><alex-contact-modal></alex-contact-modal></akyral-modal><div class=container><alex-header class=padding-y></alex-header></div><div id=main-content><app-router mode=pushstate><app-route path=portfolio/:id import=/elements/_pages/page-portfolio-item.html></app-route><app-route path="/" import=/elements/_pages/page-home.html></app-route></app-router></div><div class=container><alex-footer></alex-footer></div></template><script>
+    </style><akyral-modal id=collective-contact><alex-contact-modal></alex-contact-modal></akyral-modal><div class=container><alex-header class=padding-y></alex-header></div><div id=main-content><app-router mode=pushstate><app-route path=portfolio/:id element=page-portfolio-item></app-route><app-route path="/" element=page-home></app-route></app-router></div><div class=container><alex-footer></alex-footer></div></template><script>
   (function() {
     'use strict';
 
@@ -15676,6 +15676,41 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
       properties: {
       }
+    });
+  })();
+  </script></dom-module><dom-module id=page-portfolio-item assetpath="_pages/"><template><style>
+      :host {
+        display: block;
+      }
+
+      #project-media, .project-image-single {
+        height: 350px;
+        width: 100%;
+      }
+    </style><iron-ajax last-response={{portfolioItem}} auto url={{apiURL}} handle-as=json></iron-ajax><div class=container><alex-hero content={{portfolioItem.0.description.md}}></alex-hero><div id=project-media class="margin-y zframe-1"><iron-image class=project-image-single fade preload sizing=cover src=http://lorempixel.com/1280/720></iron-image></div><div layout=row class="layout-gutters padding-top"><div flex=8 flex-sm=12><h4>Challenge</h4><div id=project-challenge><marked-element markdown={{portfolioItem.0.challenge.md}}></marked-element></div></div><div flex=4 flex-sm=12><h4>Client</h4><p id=project-client>{{portfolioItem.0.client}}</p><alex-tag-list tags={{portfolioItem.0.expertiseTags}}></alex-tag-list><h4>Collaborators</h4><ul class=list-no-style><template is=dom-repeat items={{portfolioItem.0.collaborators}}><li><span>{{item.name.first}}</span> <span>{{item.name.last}}</span></li></template></ul></div></div><div layout=row layout-align="center center" class=panel-margin><div><a id=project-case-study href={{portfolioItem.0.caseStudyURL}} class=alex-button>Read the Case Study</a> <a id=project-link href={{portfolioItem.0.externalURL}} class=alex-button>Visit Site</a></div></div><alex-project-footer project={{portfolioItem.0}}></alex-project-footer></div></template><script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'page-portfolio-item',
+
+      properties: {
+        id: String,
+
+        portfolioItem: {
+          type: Array
+        },
+
+        apiURL: {
+          type: String,
+          computed: '_getProjectURL(id)'
+        }
+      },
+
+      _getProjectURL: function (id) {
+        return 'http://content.collectivelymade.com/portfolio?where={"_id": "' + id + '"}';
+      }
+
     });
   })();
   </script></dom-module></div></body></html>

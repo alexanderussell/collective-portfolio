@@ -26,7 +26,7 @@ This is a container element for your app. Feel free to extend.
       <alex-hero content="{{portfolioItem.0.description.md}}"></alex-hero>
       <template is="dom-if" if="{{isSingleImage}}">
         <div id="project-media" class="margin-y zframe-1">
-          <iron-image class="project-image-single" fade preload sizing="cover" src="{{portfolioItem.0.image}}"></iron-image>
+          <iron-image class="project-image-single" fade preload sizing="cover" src="{{portfolioItem.0.image.url}}"></iron-image>
         </div>
       </template>
       <div layout="row" class="layout-gutters padding-top">

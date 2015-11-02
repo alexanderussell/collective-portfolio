@@ -25,6 +25,7 @@ This is a container element for your app. Feel free to extend.
 
       :host:hover .project-content {
         background-color: var(--color, transparent);
+        color: var(--contentColor, #fff);
       }
 
       :host:hover .project-content:before {
@@ -71,8 +72,19 @@ This is a container element for your app. Feel free to extend.
       },
 
       _projectChanged: function (value) {
+        // Set color
         this.customStyle['--color'] = value.color;
-        this.customStyle['--bg'] = 'url("'+value.backgroundImage.url+'")';
+        // Set BG image
+        if(value.backgroundImage !== null && value.backgroundImage.hasOwnProperty('url')) {
+          this.customStyle['--bg'] = 'url("'+value.backgroundImage.url+'")';
+        }
+        // Set text color
+        if(value.textStyle == 'light') {
+          this.customStyle['--contentColor'] = '#FFF';
+        } else {
+          this.customStyle['--contentColor'] = '#263238';
+        }
+        // Update styles
         Polymer.updateStyles();
       },
 

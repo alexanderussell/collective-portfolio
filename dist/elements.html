@@ -15583,6 +15583,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
       :host:hover .project-content {
         background-color: var(--color, transparent);
+        color: var(--contentColor, #fff);
       }
 
       :host:hover .project-content:before {
@@ -15613,8 +15614,19 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       },
 
       _projectChanged: function (value) {
+        // Set color
         this.customStyle['--color'] = value.color;
-        this.customStyle['--bg'] = 'url("'+value.backgroundImage.url+'")';
+        // Set BG image
+        if(value.backgroundImage !== null && value.backgroundImage.hasOwnProperty('url')) {
+          this.customStyle['--bg'] = 'url("'+value.backgroundImage.url+'")';
+        }
+        // Set text color
+        if(value.textStyle == 'light') {
+          this.customStyle['--contentColor'] = '#FFF';
+        } else {
+          this.customStyle['--contentColor'] = '#263238';
+        }
+        // Update styles
         Polymer.updateStyles();
       },
 
@@ -15687,7 +15699,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         height: 350px;
         width: 100%;
       }
-    </style><iron-ajax last-response={{portfolioItem}} auto url={{apiURL}} handle-as=json></iron-ajax><div class=container><alex-hero content={{portfolioItem.0.description.md}}></alex-hero><template is=dom-if if={{isSingleImage}}><div id=project-media class="margin-y zframe-1"><iron-image class=project-image-single fade preload sizing=cover src={{portfolioItem.0.image}}></iron-image></div></template><div layout=row class="layout-gutters padding-top"><div flex=8 flex-sm=12><h4>Challenge</h4><div id=project-challenge><marked-element markdown={{portfolioItem.0.challenge.md}}></marked-element></div></div><div flex=4 flex-sm=12><h4>Client</h4><p id=project-client>{{portfolioItem.0.client}}</p><alex-tag-list tags={{portfolioItem.0.expertiseTags}}></alex-tag-list><h4>Collaborators</h4><ul class=list-no-style><template is=dom-repeat items={{portfolioItem.0.collaborators}}><li><span>{{item.name.first}}</span> <span>{{item.name.last}}</span></li></template></ul></div></div><div layout=row layout-align="center center" class=panel-margin><div><a id=project-case-study href={{portfolioItem.0.caseStudyURL}} class=alex-button>Read the Case Study</a> <a id=project-link href={{portfolioItem.0.externalURL}} class=alex-button>Visit Site</a></div></div><alex-project-footer project={{portfolioItem.0}}></alex-project-footer></div></template><script>
+    </style><iron-ajax last-response={{portfolioItem}} auto url={{apiURL}} handle-as=json></iron-ajax><div class=container><alex-hero content={{portfolioItem.0.description.md}}></alex-hero><template is=dom-if if={{isSingleImage}}><div id=project-media class="margin-y zframe-1"><iron-image class=project-image-single fade preload sizing=cover src={{portfolioItem.0.image.url}}></iron-image></div></template><div layout=row class="layout-gutters padding-top"><div flex=8 flex-sm=12><h4>Challenge</h4><div id=project-challenge><marked-element markdown={{portfolioItem.0.challenge.md}}></marked-element></div></div><div flex=4 flex-sm=12><h4>Client</h4><p id=project-client>{{portfolioItem.0.client}}</p><alex-tag-list tags={{portfolioItem.0.expertiseTags}}></alex-tag-list><h4>Collaborators</h4><ul class=list-no-style><template is=dom-repeat items={{portfolioItem.0.collaborators}}><li><span>{{item.name.first}}</span> <span>{{item.name.last}}</span></li></template></ul></div></div><div layout=row layout-align="center center" class=panel-margin><div><a id=project-case-study href={{portfolioItem.0.caseStudyURL}} class=alex-button>Read the Case Study</a> <a id=project-link href={{portfolioItem.0.externalURL}} class=alex-button>Visit Site</a></div></div><alex-project-footer project={{portfolioItem.0}}></alex-project-footer></div></template><script>
   (function() {
     'use strict';
 

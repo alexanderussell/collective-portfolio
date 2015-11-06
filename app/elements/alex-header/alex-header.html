@@ -16,7 +16,7 @@ This is a container element for your app. Feel free to extend.
       }
     </style>
     <alex-toolbar id="main-header">
-      <span class="title"><a is="pushstate-anchor" href="/">Collectively Made</a></span>
+      <span class="title"><a is="pushstate-anchor" class="link-alternate-1" href="/">Collectively Made</a></span>
       <button type="button" on-click="showContactModal" name="contactUs" class="button-medium">Contact Us</button>
     </alex-toolbar>
   </template>
@@ -28,7 +28,6 @@ This is a container element for your app. Feel free to extend.
       is: 'alex-header',
 
       showContactModal: function () {
-        console.log('Showing Contact');
         document.querySelector('#collective-contact').show();
       }
     });

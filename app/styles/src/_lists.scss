@@ -6,6 +6,7 @@
 
 .list-tags {
   li {
+    cursor: default;
     margin: 0 ($base-unit - 3px) $base-unit 0;
   }
 }

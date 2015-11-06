@@ -28,6 +28,11 @@
         "iron-image.html"
       ]
     },
+    "page-title": {
+      "main": [
+        "page-title.html"
+      ]
+    },
     "alex-flex-layout": {
       "main": [
         "alex-flex-layout.html",
@@ -47,6 +52,8 @@
     "iron-image": "PolymerElements/iron-image#~1.0.2",
     "akyral-modal": "~3.0.2",
     "iron-ajax": "PolymerElements/iron-ajax#~1.0.7",
-    "marked-element": "PolymerElements/marked-element#~1.1.1"
+    "marked-element": "PolymerElements/marked-element#~1.1.1",
+    "page-title": "~1.0.0",
+    "iron-autogrow-textarea": "PolymerElements/iron-autogrow-textarea#~1.0.8"
   }
 }

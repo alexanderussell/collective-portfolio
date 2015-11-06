@@ -1,5 +1,9 @@
 alex-hero {
   h1 {
-    font-size: 3.5em;
+    font-size: 1.5em;
+
+    @media (min-width: $breakpoint-tablet) {
+      font-size: 3.5em;
+    }
   }
 }

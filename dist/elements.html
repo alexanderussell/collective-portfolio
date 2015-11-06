@@ -568,7 +568,7 @@ debouncer.stop();
 }
 }
 });
-Polymer.version = '1.2.0';
+Polymer.version = '1.2.1';
 Polymer.Base._addFeature({
 _registerFeatures: function () {
 this._prepIs();
@@ -972,6 +972,17 @@ this.patch();
 DomApi.prototype = {
 flush: function () {
 Polymer.dom.flush();
+},
+deepContains: function (node) {
+if (this.node.contains(node)) {
+return true;
+}
+var n = node;
+var wrappedDocument = wrap(document);
+while (n && n !== wrappedDocument && n !== this.node) {
+n = Polymer.dom(n).parentNode || n.host;
+}
+return n === this.node;
 },
 _lazyDistribute: function (host) {
 if (host.shadyRoot && host.shadyRoot._distributionClean) {
@@ -3776,7 +3787,7 @@ elt[n] = props[n];
 return elt;
 },
 isLightDescendant: function (node) {
-return this.contains(node) && Polymer.dom(this).getOwnerRoot() === Polymer.dom(node).getOwnerRoot();
+return this !== node && this.contains(node) && Polymer.dom(this).getOwnerRoot() === Polymer.dom(node).getOwnerRoot();
 },
 isLocalDescendant: function (node) {
 return this.root === Polymer.dom(node).getOwnerRoot();
@@ -4374,7 +4385,7 @@ this._handlers = [];
 Polymer.Base._addFeature({
 notifyPath: function (path, value, fromAbove) {
 var info = {};
-path = this._get(path, this, info);
+this._get(path, this, info);
 this._notifyPath(info.path, value, fromAbove);
 },
 _notifyPath: function (path, value, fromAbove) {
@@ -4491,9 +4502,9 @@ if (effect.value === path || effect.value.indexOf(path + '.') === 0) {
 Polymer.Bind._annotationEffect.call(this, path, value, effect);
 } else if (path.indexOf(effect.value + '.') === 0 && !effect.negate) {
 var node = this._nodes[effect.index];
-if (node && node.notifyPath) {
+if (node && node._notifyPath) {
 var p = this._fixPath(effect.name, effect.value, path);
-node.notifyPath(p, value, true);
+node._notifyPath(p, value, true);
 }
 }
 },
@@ -4533,9 +4544,9 @@ _notifyBoundPaths: function (path, value) {
 for (var a in this._boundPaths) {
 var b = this._boundPaths[a];
 if (path.indexOf(a + '.') == 0) {
-this.notifyPath(this._fixPath(b, a, path), value);
+this._notifyPath(this._fixPath(b, a, path), value);
 } else if (path.indexOf(b + '.') == 0) {
-this.notifyPath(this._fixPath(a, b, path), value);
+this._notifyPath(this._fixPath(a, b, path), value);
 }
 }
 },
@@ -4803,7 +4814,7 @@ _rx: {
 comments: /\/\*[^*]*\*+([^\/*][^*]*\*+)*\//gim,
 port: /@import[^;]*;/gim,
 customProp: /(?:^|[\s;])--[^;{]*?:[^{};]*?(?:[;\n]|$)/gim,
-mixinProp: /(?:^|[\s;])--[^;{]*?:[^{;]*?{[^}]*?}(?:[;\n]|$)?/gim,
+mixinProp: /(?:^|[\s;])?--[^;{]*?:[^{;]*?{[^}]*?}(?:[;\n]|$)?/gim,
 mixinApply: /@apply[\s]*\([^)]*?\)[\s]*(?:[;\n]|$)?/gim,
 varApply: /[^;:]*?:[^;]*var[^;]*(?:[;\n]|$)?/gim,
 keyframesRule: /^@[^\s]*keyframes/
@@ -5506,7 +5517,7 @@ props[i] = v;
 }
 },
 rx: {
-VAR_ASSIGN: /(?:^|[;\n]\s*)(--[\w-]*?):\s*(?:([^;{]*)|{([^}]*)})(?:(?=[;\n])|$)/gi,
+VAR_ASSIGN: /(?:^|[;\s{]\s*)(--[\w-]*?)\s*:\s*(?:([^;{]*)|{([^}]*)})(?:(?=[;\s}])|$)/gi,
 MIXIN_MATCH: /(?:^|\W+)@apply[\s]*\(([^)]*)\)/i,
 VAR_MATCH: /(^|\W+)var\([\s]*([^,)]*)[\s]*,?[\s]*((?:[^,)]*)|(?:[^;]*\([^;)]*\)))[\s]*?\)/gi,
 VAR_CAPTURE: /\([\s]*(--[^,\s)]*)(?:,[\s]*(--[^,\s)]*))?(?:\)|,)/gi,
@@ -6041,7 +6052,10 @@ _pathEffectorImpl: function (path, value, fromAbove) {
 if (this._forwardParentPath) {
 if (path.indexOf(this._parentPropPrefix) === 0) {
 var subPath = path.substring(this._parentPropPrefix.length);
+var model = this._modelForPath(subPath);
+if (model in this._parentProps) {
 this._forwardParentPath(subPath, value);
+}
 }
 }
 Polymer.Base._pathEffector.call(this._templatized, path, value, fromAbove);
@@ -14567,6 +14581,598 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }).call(function() {
   return this || (typeof window !== 'undefined' ? window : global);
 }());
+</script><script>
+  Polymer({
+    is: 'page-title',
+
+    properties: {
+      /**
+       * The base title of your webpage which never changes. Possibly the
+       * name of your application. Optional.
+       *
+       * @type String
+       * @default ''
+       */
+      baseTitle: {
+        type: String,
+        value: ''
+      },
+
+      /**
+       * The divider to be used between your base title and title, if a
+       * base title is supplied. Optional.
+       *
+       * @type String
+       * @default ' - '
+       */
+      divider: {
+        type: String,
+        value: '-'
+      },
+
+      /**
+       * The current title of your webpage.
+       *
+       * @type String
+       * @required
+       */
+      title: {
+        type: String
+      },
+
+      /**
+       * The direction your base title and title should be shown.
+       * Defaults to `standard`. Can be one of these values:
+       *
+       *  | Value | Meaning |
+       *  | standard | `baseTitle` comes first. |
+       *  | reversed | `title` comes first. |
+       *
+       * @type String
+       * @default 'standard'
+       */
+      direction: {
+        type: String,
+        value: 'standard'
+      },
+
+      /**
+       * The current title as computed by the element.
+       */
+      computedTitle: {
+        type: String,
+        readOnly: true,
+        notify: true
+      }
+    },
+
+    observers: [
+      '_updatePageTitle(baseTitle, divider, title, direction)'
+    ],
+
+    _updatePageTitle: function(baseTitle, divider, title, direction) {
+      var pieces;
+
+      if (direction == 'standard') {
+        pieces = (baseTitle) ? [baseTitle, title] : [title];
+      } else if (direction == 'reversed') {
+        pieces = (baseTitle) ? [title, baseTitle] : [title];
+      } else {
+        console.warn("page-title - Did not recognize `direction` property.");
+        return;
+      }
+
+      document.title = pieces.join(" " + divider + " ");
+      this._setComputedTitle(document.title);
+    }
+  });
+</script><script>
+
+  /**
+   * @demo demo/index.html
+   * @polymerBehavior
+   */
+  Polymer.IronControlState = {
+
+    properties: {
+
+      /**
+       * If true, the element currently has focus.
+       */
+      focused: {
+        type: Boolean,
+        value: false,
+        notify: true,
+        readOnly: true,
+        reflectToAttribute: true
+      },
+
+      /**
+       * If true, the user cannot interact with this element.
+       */
+      disabled: {
+        type: Boolean,
+        value: false,
+        notify: true,
+        observer: '_disabledChanged',
+        reflectToAttribute: true
+      },
+
+      _oldTabIndex: {
+        type: Number
+      },
+
+      _boundFocusBlurHandler: {
+        type: Function,
+        value: function() {
+          return this._focusBlurHandler.bind(this);
+        }
+      }
+
+    },
+
+    observers: [
+      '_changedControlState(focused, disabled)'
+    ],
+
+    ready: function() {
+      this.addEventListener('focus', this._boundFocusBlurHandler, true);
+      this.addEventListener('blur', this._boundFocusBlurHandler, true);
+    },
+
+    _focusBlurHandler: function(event) {
+      // NOTE(cdata):  if we are in ShadowDOM land, `event.target` will
+      // eventually become `this` due to retargeting; if we are not in
+      // ShadowDOM land, `event.target` will eventually become `this` due
+      // to the second conditional which fires a synthetic event (that is also
+      // handled). In either case, we can disregard `event.path`.
+
+      if (event.target === this) {
+        this._setFocused(event.type === 'focus');
+      } else if (!this.shadowRoot && !this.isLightDescendant(event.target)) {
+        this.fire(event.type, {sourceEvent: event}, {
+          node: this,
+          bubbles: event.bubbles,
+          cancelable: event.cancelable
+        });
+      }
+    },
+
+    _disabledChanged: function(disabled, old) {
+      this.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+      this.style.pointerEvents = disabled ? 'none' : '';
+      if (disabled) {
+        this._oldTabIndex = this.tabIndex;
+        this.focused = false;
+        this.tabIndex = -1;
+      } else if (this._oldTabIndex !== undefined) {
+        this.tabIndex = this._oldTabIndex;
+      }
+    },
+
+    _changedControlState: function() {
+      // _controlStateChanged is abstract, follow-on behaviors may implement it
+      if (this._controlStateChanged) {
+        this._controlStateChanged();
+      }
+    }
+
+  };
+
+</script><script>
+
+  /**
+   * @demo demo/index.html
+   * @polymerBehavior Polymer.IronButtonState
+   */
+  Polymer.IronButtonStateImpl = {
+
+    properties: {
+
+      /**
+       * If true, the user is currently holding down the button.
+       */
+      pressed: {
+        type: Boolean,
+        readOnly: true,
+        value: false,
+        reflectToAttribute: true,
+        observer: '_pressedChanged'
+      },
+
+      /**
+       * If true, the button toggles the active state with each tap or press
+       * of the spacebar.
+       */
+      toggles: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
+      },
+
+      /**
+       * If true, the button is a toggle and is currently in the active state.
+       */
+      active: {
+        type: Boolean,
+        value: false,
+        notify: true,
+        reflectToAttribute: true
+      },
+
+      /**
+       * True if the element is currently being pressed by a "pointer," which
+       * is loosely defined as mouse or touch input (but specifically excluding
+       * keyboard input).
+       */
+      pointerDown: {
+        type: Boolean,
+        readOnly: true,
+        value: false
+      },
+
+      /**
+       * True if the input device that caused the element to receive focus
+       * was a keyboard.
+       */
+      receivedFocusFromKeyboard: {
+        type: Boolean,
+        readOnly: true
+      },
+
+      /**
+       * The aria attribute to be set if the button is a toggle and in the
+       * active state.
+       */
+      ariaActiveAttribute: {
+        type: String,
+        value: 'aria-pressed',
+        observer: '_ariaActiveAttributeChanged'
+      }
+    },
+
+    listeners: {
+      down: '_downHandler',
+      up: '_upHandler',
+      tap: '_tapHandler'
+    },
+
+    observers: [
+      '_detectKeyboardFocus(focused)',
+      '_activeChanged(active, ariaActiveAttribute)'
+    ],
+
+    keyBindings: {
+      'enter:keydown': '_asyncClick',
+      'space:keydown': '_spaceKeyDownHandler',
+      'space:keyup': '_spaceKeyUpHandler',
+    },
+
+    _mouseEventRe: /^mouse/,
+
+    _tapHandler: function() {
+      if (this.toggles) {
+       // a tap is needed to toggle the active state
+        this._userActivate(!this.active);
+      } else {
+        this.active = false;
+      }
+    },
+
+    _detectKeyboardFocus: function(focused) {
+      this._setReceivedFocusFromKeyboard(!this.pointerDown && focused);
+    },
+
+    // to emulate native checkbox, (de-)activations from a user interaction fire
+    // 'change' events
+    _userActivate: function(active) {
+      if (this.active !== active) {
+        this.active = active;
+        this.fire('change');
+      }
+    },
+
+    _downHandler: function(event) {
+      this._setPointerDown(true);
+      this._setPressed(true);
+      this._setReceivedFocusFromKeyboard(false);
+    },
+
+    _upHandler: function() {
+      this._setPointerDown(false);
+      this._setPressed(false);
+    },
+
+    __isFocusedLightDescendant: function(target) {
+      var root = Polymer.dom(this).getOwnerRoot() || document;
+      var focusedElement = root.activeElement;
+
+      // TODO(noms): remove the `this !== target` check once polymer#2610 is fixed.
+      return this !== target && this.isLightDescendant(target) && target == focusedElement;
+    },
+
+    /**
+     * @param {!KeyboardEvent} event .
+     */
+    _spaceKeyDownHandler: function(event) {
+      var keyboardEvent = event.detail.keyboardEvent;
+      var target = Polymer.dom(keyboardEvent).localTarget;
+
+      // Ignore the event if this is coming from a focused light child, since that
+      // element will deal with it.
+      if (this.__isFocusedLightDescendant(target))
+        return;
+
+      keyboardEvent.preventDefault();
+      keyboardEvent.stopImmediatePropagation();
+      this._setPressed(true);
+    },
+
+    /**
+     * @param {!KeyboardEvent} event .
+     */
+    _spaceKeyUpHandler: function(event) {
+      var keyboardEvent = event.detail.keyboardEvent;
+      var target = Polymer.dom(keyboardEvent).localTarget;
+
+      // Ignore the event if this is coming from a focused light child, since that
+      // element will deal with it.
+      if (this.__isFocusedLightDescendant(target))
+        return;
+
+      if (this.pressed) {
+        this._asyncClick();
+      }
+      this._setPressed(false);
+    },
+
+    // trigger click asynchronously, the asynchrony is useful to allow one
+    // event handler to unwind before triggering another event
+    _asyncClick: function() {
+      this.async(function() {
+        this.click();
+      }, 1);
+    },
+
+    // any of these changes are considered a change to button state
+
+    _pressedChanged: function(pressed) {
+      this._changedButtonState();
+    },
+
+    _ariaActiveAttributeChanged: function(value, oldValue) {
+      if (oldValue && oldValue != value && this.hasAttribute(oldValue)) {
+        this.removeAttribute(oldValue);
+      }
+    },
+
+    _activeChanged: function(active, ariaActiveAttribute) {
+      if (this.toggles) {
+        this.setAttribute(this.ariaActiveAttribute,
+                          active ? 'true' : 'false');
+      } else {
+        this.removeAttribute(this.ariaActiveAttribute);
+      }
+      this._changedButtonState();
+    },
+
+    _controlStateChanged: function() {
+      if (this.disabled) {
+        this._setPressed(false);
+      } else {
+        this._changedButtonState();
+      }
+    },
+
+    // provide hook for follow-on behaviors to react to button-state
+
+    _changedButtonState: function() {
+      if (this._buttonStateChanged) {
+        this._buttonStateChanged(); // abstract
+      }
+    }
+
+  };
+
+  /** @polymerBehavior */
+  Polymer.IronButtonState = [
+    Polymer.IronA11yKeysBehavior,
+    Polymer.IronButtonStateImpl
+  ];
+
+</script><script>
+
+  /**
+   * `Use Polymer.IronValidatableBehavior` to implement an element that validates user input.
+   * Use the related `Polymer.IronValidatorBehavior` to add custom validation logic to an iron-input.
+   *
+   * By default, an `<iron-form>` element validates its fields when the user presses the submit button.
+   * To validate a form imperatively, call the form's `validate()` method, which in turn will
+   * call `validate()` on all its children. By using `Polymer.IronValidatableBehavior`, your
+   * custom element will get a public `validate()`, which
+   * will return the validity of the element, and a corresponding `invalid` attribute,
+   * which can be used for styling.
+   *
+   * To implement the custom validation logic of your element, you must override
+   * the protected `_getValidity()` method of this behaviour, rather than `validate()`.
+   * See [this](https://github.com/PolymerElements/iron-form/blob/master/demo/simple-element.html)
+   * for an example.
+   *
+   * ### Accessibility
+   *
+   * Changing the `invalid` property, either manually or by calling `validate()` will update the
+   * `aria-invalid` attribute.
+   *
+   * @demo demo/index.html
+   * @polymerBehavior
+   */
+  Polymer.IronValidatableBehavior = {
+
+    properties: {
+
+      /**
+       * Namespace for this validator.
+       */
+      validatorType: {
+        type: String,
+        value: 'validator'
+      },
+
+      /**
+       * Name of the validator to use.
+       */
+      validator: {
+        type: String
+      },
+
+      /**
+       * True if the last call to `validate` is invalid.
+       */
+      invalid: {
+        notify: true,
+        reflectToAttribute: true,
+        type: Boolean,
+        value: false
+      },
+
+      _validatorMeta: {
+        type: Object
+      }
+
+    },
+
+    observers: [
+      '_invalidChanged(invalid)'
+    ],
+
+    get _validator() {
+      return this._validatorMeta && this._validatorMeta.byKey(this.validator);
+    },
+
+    ready: function() {
+      this._validatorMeta = new Polymer.IronMeta({type: this.validatorType});
+    },
+
+    _invalidChanged: function() {
+      if (this.invalid) {
+        this.setAttribute('aria-invalid', 'true');
+      } else {
+        this.removeAttribute('aria-invalid');
+      }
+    },
+
+    /**
+     * @return {boolean} True if the validator `validator` exists.
+     */
+    hasValidator: function() {
+      return this._validator != null;
+    },
+
+    /**
+     * Returns true if the `value` is valid, and updates `invalid`. If you want
+     * your element to have custom validation logic, do not override this method;
+     * override `_getValidity(value)` instead.
+
+     * @param {Object} value The value to be validated. By default, it is passed
+     * to the validator's `validate()` function, if a validator is set.
+     * @return {boolean} True if `value` is valid.
+     */
+    validate: function(value) {
+      this.invalid = !this._getValidity(value);
+      return !this.invalid;
+    },
+
+    /**
+     * Returns true if `value` is valid.  By default, it is passed
+     * to the validator's `validate()` function, if a validator is set. You
+     * should override this method if you want to implement custom validity
+     * logic for your element.
+     *
+     * @param {Object} value The value to be validated.
+     * @return {boolean} True if `value` is valid.
+     */
+
+    _getValidity: function(value) {
+      if (this.hasValidator()) {
+        return this._validator.validate(value);
+      }
+      return true;
+    }
+  };
+
+</script><script>
+  /**
+  Polymer.IronFormElementBehavior enables a custom element to be included
+  in an `iron-form`.
+
+  @demo demo/index.html
+  @polymerBehavior
+  */
+  Polymer.IronFormElementBehavior = {
+
+    properties: {
+      /**
+       * Fired when the element is added to an `iron-form`.
+       *
+       * @event iron-form-element-register
+       */
+
+      /**
+       * Fired when the element is removed from an `iron-form`.
+       *
+       * @event iron-form-element-unregister
+       */
+
+      /**
+       * The name of this element.
+       */
+      name: {
+        type: String
+      },
+
+      /**
+       * The value for this element.
+       */
+      value: {
+        notify: true,
+        type: String
+      },
+
+      /**
+       * Set to true to mark the input as required. If used in a form, a
+       * custom element that uses this behavior should also use
+       * Polymer.IronValidatableBehavior and define a custom validation method.
+       * Otherwise, a `required` element will always be considered valid.
+       * It's also strongly recommended to provide a visual style for the element
+       * when its value is invalid.
+       */
+      required: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * The form that the element is registered to.
+       */
+      _parentForm: {
+        type: Object
+      }
+    },
+
+    attached: function() {
+      // Note: the iron-form that this element belongs to will set this
+      // element's _parentForm property when handling this event.
+      this.fire('iron-form-element-register');
+    },
+
+    detached: function() {
+      if (this._parentForm) {
+        this._parentForm.fire('iron-form-element-unregister', {target: this});
+      }
+    }
+
+  };
+
 </script></head><body><div hidden by-vulcanize><dom-module id=alex-toolbar assetpath="../bower_components/alex-toolbar/"><style>
 :host {
   background: #A4B0C0;
@@ -15485,6 +16091,289 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
   });
 
+</script><dom-module id=iron-autogrow-textarea assetpath="../bower_components/iron-autogrow-textarea/"><style>
+    :host {
+      display: inline-block;
+      position: relative;
+      width: 400px;
+      border: 1px solid;
+      padding: 2px;
+      -moz-appearance: textarea;
+      -webkit-appearance: textarea;
+    }
+
+    .mirror-text {
+      visibility: hidden;
+      word-wrap: break-word;
+    }
+
+    .fit {
+      @apply(--layout-fit);
+    }
+
+    textarea {
+      position: relative;
+      outline: none;
+      border: none;
+      resize: none;
+      background: inherit;
+      color: inherit;
+      /* see comments in template */
+      width: 100%;
+      height: 100%;
+      font-size: inherit;
+      font-family: inherit;
+      line-height: inherit;
+      text-align: inherit;
+      @apply(--iron-autogrow-textarea);
+    }
+
+    ::content textarea:invalid {
+      box-shadow: none;
+    }
+
+  </style><template><div id=mirror class=mirror-text aria-hidden=true>&nbsp;</div><div class="textarea-container fit"><textarea id=textarea autocomplete$=[[autocomplete]] autofocus$=[[autofocus]] inputmode$=[[inputmode]] placeholder$=[[placeholder]] readonly$=[[readonly]] required$=[[required]] disabled$=[[disabled]] rows$=[[rows]] maxlength$=[[maxlength]]></textarea></div></template></dom-module><script>
+
+  Polymer({
+
+    is: 'iron-autogrow-textarea',
+
+    behaviors: [
+      Polymer.IronFormElementBehavior,
+      Polymer.IronValidatableBehavior,
+      Polymer.IronControlState
+    ],
+
+    properties: {
+
+      /**
+       * Use this property instead of `value` for two-way data binding.
+       *
+       * @type {string|number|undefined|null}
+       */
+      bindValue: {
+        observer: '_bindValueChanged',
+        type: String
+      },
+
+      /**
+       * The initial number of rows.
+       *
+       * @attribute rows
+       * @type number
+       * @default 1
+       */
+      rows: {
+        type: Number,
+        value: 1,
+        observer: '_updateCached'
+      },
+
+      /**
+       * The maximum number of rows this element can grow to until it
+       * scrolls. 0 means no maximum.
+       *
+       * @attribute maxRows
+       * @type number
+       * @default 0
+       */
+      maxRows: {
+       type: Number,
+       value: 0,
+       observer: '_updateCached'
+      },
+
+      /**
+       * Bound to the textarea's `autocomplete` attribute.
+       */
+      autocomplete: {
+        type: String,
+        value: 'off'
+      },
+
+      /**
+       * Bound to the textarea's `autofocus` attribute.
+       */
+      autofocus: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Bound to the textarea's `inputmode` attribute.
+       */
+      inputmode: {
+        type: String
+      },
+
+      /**
+       * Bound to the textarea's `name` attribute.
+       */
+      name: {
+        type: String
+      },
+
+      /**
+       * The value for this input, same as `bindValue`
+       */
+      value: {
+        notify: true,
+        type: String,
+        computed: '_computeValue(bindValue)'
+      },
+
+      /**
+       * Bound to the textarea's `placeholder` attribute.
+       */
+      placeholder: {
+        type: String
+      },
+
+      /**
+       * Bound to the textarea's `readonly` attribute.
+       */
+      readonly: {
+        type: String
+      },
+
+      /**
+       * Set to true to mark the textarea as required.
+       */
+      required: {
+        type: Boolean
+      },
+
+      /**
+       * The maximum length of the input value.
+       */
+      maxlength: {
+        type: Number
+      }
+
+    },
+
+    listeners: {
+      'input': '_onInput'
+    },
+
+    /**
+     * Returns the underlying textarea.
+     * @type HTMLTextAreaElement
+     */
+    get textarea() {
+      return this.$.textarea;
+    },
+
+    /**
+     * Returns textarea's selection start.
+     * @type Number
+     */
+    get selectionStart() {
+      return this.$.textarea.selectionStart;
+    },
+
+    /**
+     * Returns textarea's selection end.
+     * @type Number
+     */
+    get selectionEnd() {
+      return this.$.textarea.selectionEnd;
+    },
+
+    /**
+     * Sets the textarea's selection start.
+     */
+    set selectionStart(value) {
+      this.$.textarea.selectionStart = value;
+    },
+
+    /**
+     * Sets the textarea's selection end.
+     */
+    set selectionEnd(value) {
+      this.$.textarea.selectionEnd = value;
+    },
+
+    /**
+     * Returns true if `value` is valid. The validator provided in `validator`
+     * will be used first, if it exists; otherwise, the `textarea`'s validity
+     * is used.
+     * @return {boolean} True if the value is valid.
+     */
+    validate: function() {
+      // Empty, non-required input is valid.
+      if (!this.required && this.value == '') {
+        this.invalid = false;
+        return true;
+      }
+
+      var valid;
+      if (this.hasValidator()) {
+        valid = Polymer.IronValidatableBehavior.validate.call(this, this.value);
+      } else {
+        valid = this.$.textarea.validity.valid;
+        this.invalid = !valid;
+      }
+      this.fire('iron-input-validate');
+      return valid;
+    },
+
+    _bindValueChanged: function() {
+      var textarea = this.textarea;
+      if (!textarea) {
+        return;
+      }
+
+      // If the bindValue changed manually, then we need to also update
+      // the underlying textarea's value. Otherwise this change was probably
+      // generated from the _onInput handler, and the two values are already
+      // the same.
+      if (textarea.value !== this.bindValue) {
+        textarea.value = !(this.bindValue || this.bindValue === 0) ? '' : this.bindValue;
+      }
+
+      this.$.mirror.innerHTML = this._valueForMirror();
+      // manually notify because we don't want to notify until after setting value
+      this.fire('bind-value-changed', {value: this.bindValue});
+    },
+
+    _onInput: function(event) {
+      this.bindValue = event.path ? event.path[0].value : event.target.value;
+    },
+
+    _constrain: function(tokens) {
+      var _tokens;
+      tokens = tokens || [''];
+      // Enforce the min and max heights for a multiline input to avoid measurement
+      if (this.maxRows > 0 && tokens.length > this.maxRows) {
+        _tokens = tokens.slice(0, this.maxRows);
+      } else {
+        _tokens = tokens.slice(0);
+      }
+      while (this.rows > 0 && _tokens.length < this.rows) {
+        _tokens.push('');
+      }
+      // Use &#160; instead &nbsp; of to allow this element to be used in XHTML.
+      return _tokens.join('<br/>') + '&#160;';
+    },
+
+    _valueForMirror: function() {
+      var input = this.textarea;
+      if (!input) {
+        return;
+      }
+      this.tokens = (input && input.value) ? input.value.replace(/&/gm, '&amp;').replace(/"/gm, '&quot;').replace(/'/gm, '&#39;').replace(/</gm, '&lt;').replace(/>/gm, '&gt;').split('\n') : [''];
+      return this._constrain(this.tokens);
+    },
+
+    _updateCached: function() {
+      this.$.mirror.innerHTML = this._constrain(this.tokens);
+    },
+
+    _computeValue: function() {
+      return this.bindValue;
+    }
+  });
 </script><dom-module id=alex-app assetpath="alex-app/"><template><style>
       :host {
         display: block;
@@ -15492,12 +16381,26 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       :host > .container {
         /*min-height: 100vh;*/
       }
-    </style><akyral-modal id=collective-contact><alex-contact-modal></alex-contact-modal></akyral-modal><div class=container><alex-header class=padding-y></alex-header></div><div id=main-content><app-router mode=pushstate><app-route path=portfolio/:id element=page-portfolio-item></app-route><app-route path="/" element=page-home></app-route></app-router></div><div class=container><alex-footer></alex-footer></div></template><script>
+    </style><page-title base-title="Collectively Made" divider=| title=Hello direction=reversed></page-title><akyral-modal id=collective-contact><alex-contact-modal></alex-contact-modal></akyral-modal><div class=container><alex-header class=padding-y></alex-header></div><div id=main-content><app-router mode=pushstate on-state-change=stateChange><app-route path=portfolio/:id element=page-portfolio-item></app-route><app-route path="/" element=page-home></app-route></app-router></div><div class=container><alex-footer></alex-footer></div><script type=text/javascript>
+      !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
+      analytics.load("vThHLs4qMSKncyaMJakbUzoCD7HvT0K0");
+      }}();
+    </script></template><script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'alex-app'
+      is: 'alex-app',
+
+      /**
+       * If the current app-router state changes, this will fire.
+       */
+      stateChange: function (event) {
+        // Scroll back to the top of the page.
+        window.scroll(0,0);
+        // Fires off a virtual page view.
+        // window.analytics.page();
+      }
     });
 
   })();
@@ -15505,7 +16408,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       :host {
         display: block;
       }
-    </style><alex-toolbar id=main-header><span class=title><a is=pushstate-anchor href="/">Collectively Made</a></span> <button type=button on-click=showContactModal name=contactUs class=button-medium>Contact Us</button></alex-toolbar></template><script>
+    </style><alex-toolbar id=main-header><span class=title><a is=pushstate-anchor class=link-alternate-1 href="/">Collectively Made</a></span> <button type=button on-click=showContactModal name=contactUs class=button-medium>Contact Us</button></alex-toolbar></template><script>
   (function() {
     'use strict';
 
@@ -15513,7 +16416,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       is: 'alex-header',
 
       showContactModal: function () {
-        console.log('Showing Contact');
         document.querySelector('#collective-contact').show();
       }
     });
@@ -15522,7 +16424,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       :host {
         display: block;
       }
-    </style><div layout=row class=padding-y><div class="text-small color-muted text-center" flex>© 2015 The Collective</div></div></template><script>
+    </style><div layout=row class=padding-y><div class="text-small color-muted text-center" flex>© 2015 Collectively Made</div></div></template><script>
   (function() {
     'use strict';
 
@@ -15560,12 +16462,22 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       :host {
         display: block;
       }
-    </style><h1 class="text-center margin-bottom">Let's work together</h1><div class="panel-light padding"><div layout=row layout-align="center center"><form><h3>Hey there, what's your name?</h3><input type=text name=contactName><div class=margin-top layout=row layout-align="start center"><div flex><button type=button name=submitContact class="alex-button button-medium button-secondary">Next</button></div><div class="color-muted text-small">1/3</div></div></form></div></div></template><script>
+
+      .contact-form-slide {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style><h1 class="text-center margin-bottom">Let's work together</h1><div class="panel-light padding-panel"><div layout=row layout-align="center center"><form method=post action=# data-hookform-id=5ebb81c4-eed2-4cb2-9a8e-fc8ba0f113b2><sc-swiper navigation-buttons id=contact-form-slides options="{'effect':'fade'}" flex><div class=contact-form-slide><h3>Hey there, what's your name?</h3><input type=text name=contactName value={{contactName::input}}><div class=margin-top layout=row layout-align="start center"><div flex><button type=button name=submitContact class="alex-button button-medium button-secondary">Next</button></div><div class="color-muted text-small">1/3</div></div></div><div class=contact-form-slide><h3>Hey <span>{{contactName}}</span>, what's your email address?</h3><input type=text name=contactEmail><div class=margin-top layout=row layout-align="start center"><div flex><button type=button name=submitContact class="alex-button button-medium button-secondary">Next</button></div><div class="color-muted text-small">2/3</div></div></div><div class=contact-form-slide><h3>Let us know what you’re thinking.</h3><iron-autogrow-textarea name=contactMessage></iron-autogrow-textarea><input type=text><div class=margin-top layout=row layout-align="start center"><div flex><button type=button name=submitContact class="alex-button button-medium button-secondary">Next</button></div><div class="color-muted text-small">3/3</div></div></div></sc-swiper></form></div></div><script src=https://hookforms.com/api/v1/form.js></script></template><script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'alex-contact-modal'
+      is: 'alex-contact-modal',
+
+      properties: {
+        contactName: String
+      }
     });
   })();
   </script></dom-module><dom-module id=alex-project-showcase assetpath="alex-project-showcase/"><template><style>
@@ -15573,6 +16485,12 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         display: block;
         width: 100%;
         height: 100%;
+      }
+
+      :host > a {
+        background-color: transparent;
+        display: block;
+        border: none;
       }
 
       .project-title {
@@ -15595,7 +16513,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         border-color: var(--color, inherit);
         color: var(--color, inherit);
       }
-    </style><div layout=row><div flex=2></div><h2 class=project-title flex=10>{{project.title}}</h2></div><div layout=row class=project-content><div flex></div><p class="project-desc text-hero" flex><marked-element markdown={{project.description.md}}></marked-element></p></div><div layout=flex layout-align="center center" class=padding-y><a is=pushstate-anchor href={{projectHref}} class="alex-button button-alternate-1 project-link">View Project</a></div></template><script>
+    </style><a is=pushstate-anchor href=/portfolio/{{project._id}}><div layout=row><div flex=2></div><h2 class=project-title flex=10>{{project.title}}</h2></div><div layout=row class=project-content><div flex></div><p class="project-desc text-hero" flex><marked-element markdown={{project.description.md}}></marked-element></p></div><div layout=flex layout-align="center center" class=padding-y><span class="alex-button button-alternate-1 project-link">View Project</span></div></a></template><script>
   (function() {
     'use strict';
 
@@ -15639,7 +16557,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       :host {
         display: block;
       }
-    </style><div layout=row class=padding-y><div id=project-previous-link flex=3><a is=pushstate-anchor>Previous Project</a></div><div class=text-center flex=6>{{project.title}}</div><div id=project-next-link class=text-right flex=3><a is=pushstate-anchor>Next Project</a></div></div></template><script>
+    </style><iron-ajax id=requestHandler url=//content.collectivelymade.com/portfolio handle-as=json></iron-ajax><div layout=row class=padding-y><div flex=3><template is=dom-if if={{prevProject}}><a is=pushstate-anchor href=/portfolio/{{prevProject._id}} id=project-previous-link on-mouseenter=_onButtonHover on-mouseleave=_onButtonLeave>Previous Project</a></template></div><div id=project-current-desc class="text-center text-ellipsis" flex=6>{{projectDescription}}</div><div flex=3 class=text-right><template is=dom-if if={{nextProject}}><a is=pushstate-anchor href=/portfolio/{{nextProject._id}} id=project-next-link on-mouseenter=_onButtonHover on-mouseleave=_onButtonLeave>Next Project</a></template></div></div></template><script>
   (function() {
     'use strict';
 
@@ -15647,7 +16565,62 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       is: 'alex-project-footer',
 
       properties: {
-        project: Object
+        project: {
+          type: Object,
+          observer: '_projectChanged'
+        },
+        prevProject: Object,
+        nextProject: Object,
+        projectDescription: String
+      },
+
+      _projectChanged: function (project) {
+        var el = this;
+        // Set active description
+        this.projectDescription = project.title;
+
+        // Get the previous, next projects
+        var requestHandler = this.$.requestHandler;
+
+        // Previous
+        requestHandler.params = {
+          where: JSON.stringify({ _id: { $gt: project._id } }),
+          sort: JSON.stringify({_id: 1}),
+          limit: 1
+        };
+        requestHandler.generateRequest().completes.then(function (response) {
+          el.prevProject = response.parseResponse()[0];
+        });
+
+        // Next
+        requestHandler.params = {
+          where: JSON.stringify({ _id: { $lt: project._id } }),
+          sort: JSON.stringify({_id: -1}),
+          limit: 1
+        };
+        requestHandler.generateRequest().completes.then(function (response) {
+          el.nextProject = response.parseResponse()[0];
+        });
+      },
+
+      _onButtonHover: function (event) {
+        var project = null;
+        console.log('Hovered', event);
+
+        // Determine which project we need to show
+        if(event.srcElement.id === "project-previous-link") {
+          project = this.prevProject;
+        } else {
+          project = this.nextProject;
+        }
+
+        if(!project) { return; }
+
+        this.projectDescription = project.description.md.replace(/\s+/g, " ");
+      },
+
+      _onButtonLeave: function (event) {
+        this.projectDescription = this.project.title;
       }
     });
   })();
@@ -15679,7 +16652,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       :host {
         display: block;
       }
-    </style><div class="layout-fill-viewport has-header cursor-scroll-down chevron-down" layout=column layout-align="center center"><alex-hero>A collective of creators<br>that solve problems through<br>creative uses of technology</alex-hero></div><div class="layout-fill-viewport has-footer" layout=row layout-align="center center"><iron-ajax last-response={{projects}} auto url="http://content.collectivelymade.com/portfolio?limit=5" handle-as=json></iron-ajax><sc-swiper flex navigation-buttons><template is=dom-repeat items={{projects}}><alex-project-showcase project={{item}}></alex-project-showcase></template></sc-swiper></div></template><script>
+    </style><div class="layout-fill-viewport has-header cursor-scroll-down chevron-down" layout=column layout-align="center center"><alex-hero>A collective of creators<br>that solve problems through<br>creative uses of technology</alex-hero></div><div class="layout-fill-viewport has-footer" layout=row layout-align="center center"><iron-ajax last-response={{projects}} auto url="//content.collectivelymade.com/portfolio?limit=5" handle-as=json></iron-ajax><sc-swiper flex navigation-buttons class=cursor-swipe><template is=dom-repeat items={{projects}}><alex-project-showcase project={{item}}></alex-project-showcase></template></sc-swiper></div></template><script>
   (function() {
     'use strict';
 
@@ -15687,6 +16660,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       is: 'page-home',
 
       properties: {
+      },
+
+      ready: function () {
+        // Set page title
+        document.querySelector('page-title').setAttribute('title', 'Hello');
+        // Log analytics
+        window.analytics.page(document.title);
       }
     });
   })();
@@ -15699,7 +16679,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         height: 350px;
         width: 100%;
       }
-    </style><iron-ajax last-response={{portfolioItem}} auto url={{apiURL}} handle-as=json></iron-ajax><div class=container><alex-hero content={{portfolioItem.0.description.md}}></alex-hero><template is=dom-if if={{isSingleImage}}><div id=project-media class="margin-y zframe-1"><iron-image class=project-image-single fade preload sizing=cover src={{portfolioItem.0.image.url}}></iron-image></div></template><div layout=row class="layout-gutters padding-top"><div flex=8 flex-sm=12><h4>Challenge</h4><div id=project-challenge><marked-element markdown={{portfolioItem.0.challenge.md}}></marked-element></div></div><div flex=4 flex-sm=12><h4>Client</h4><p id=project-client>{{portfolioItem.0.client}}</p><alex-tag-list tags={{portfolioItem.0.expertiseTags}}></alex-tag-list><h4>Collaborators</h4><ul class=list-no-style><template is=dom-repeat items={{portfolioItem.0.collaborators}}><li><span>{{item.name.first}}</span> <span>{{item.name.last}}</span></li></template></ul></div></div><div layout=row layout-align="center center" class=panel-margin><div><a id=project-case-study href={{portfolioItem.0.caseStudyURL}} class=alex-button>Read the Case Study</a> <a id=project-link href={{portfolioItem.0.externalURL}} class=alex-button>Visit Site</a></div></div><alex-project-footer project={{portfolioItem.0}}></alex-project-footer></div></template><script>
+    </style><meta property=og:title content={{project.0.title}}><meta property=og:image content={{project.0.title}}><iron-ajax last-response={{project}} auto url={{apiURL}} handle-as=json></iron-ajax><div class=container><alex-hero content={{project.0.description.md}}></alex-hero><template is=dom-if if={{isSingleImage}}><div id=project-media class="margin-y zframe-1"><iron-image class=project-image-single fade preload sizing=cover src={{project.0.image.url}}></iron-image></div></template><div layout=row class="layout-gutters padding-top" layout-wrap><div flex-lg=8 flex-sm=12><h4>Challenge</h4><div id=project-challenge><marked-element markdown={{project.0.challenge.md}}></marked-element></div></div><div flex-lg=4 flex-sm=12><h4>Client</h4><p id=project-client>{{project.0.client}}</p><alex-tag-list tags={{project.0.expertiseTags}}></alex-tag-list><h4>Collaborators</h4><ul class=list-no-style><template is=dom-repeat items={{project.0.collaborators}}><li><a class=link-alternate-1 href=mailto:{{item.email}}>{{item.name.first}} {{item.name.last}}</a></li></template></ul></div></div><div layout=row layout-align="center center" class=panel-margin><div><a id=project-case-study target=_blank href={{project.0.caseStudyURL}} class=alex-button>Read the Case Study</a> <a id=project-link target=_blank href={{project.0.externalURL}} class=alex-button>Visit Site</a></div></div><alex-project-footer project={{project.0}}></alex-project-footer></div></template><script>
   (function() {
     'use strict';
 
@@ -15709,8 +16689,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       properties: {
         id: String,
 
-        portfolioItem: {
-          type: Array
+        project: {
+          type: Array,
+          observer: '_projectChanged'
         },
 
         apiURL: {
@@ -15720,12 +16701,18 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
         isSingleImage: {
           type: Boolean,
-          computed: '_isSingleImage(portfolioItem)'
+          computed: '_isSingleImage(project)'
         }
       },
 
+      _projectChanged: function (project) {
+        // Set page title
+        document.querySelector('page-title').setAttribute('title', project[0].title);
+        window.analytics.page(document.title);
+      },
+
       _getProjectURL: function (id) {
-        return 'http://content.collectivelymade.com/portfolio?where={"_id": "' + id + '"}';
+        return '//content.collectivelymade.com/portfolio?where={"_id": "' + id + '"}';
       },
 
       _isSingleImage: function (project) {

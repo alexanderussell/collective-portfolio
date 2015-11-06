@@ -17,6 +17,12 @@ This is a container element for your app. Feel free to extend.
         height: 100%;
       }
 
+      :host > a {
+        background-color: transparent;
+        display: block;
+        border: none;
+      }
+
       .project-title {
         color: var(--color, inherit);
         font-size: 144px;
@@ -38,20 +44,22 @@ This is a container element for your app. Feel free to extend.
         color: var(--color, inherit);
       }
     </style>
-    <div layout="row">
-      <div flex="2"></div>
-      <h2 class="project-title" flex="10">{{project.title}}</h2>
-    </div>
-    <div layout="row" class="project-content">
-      <div flex></div>
-      <p class="project-desc text-hero" flex>
-        <marked-element markdown="{{project.description.md}}">
-        </marked-element>
-      </p>
-    </div>
-    <div layout="flex" layout-align="center center" class="padding-y">
-      <a is="pushstate-anchor" href="{{projectHref}}" class="alex-button button-alternate-1 project-link">View Project</a>
-    </div>
+    <a is="pushstate-anchor" href="/portfolio/{{project._id}}">
+      <div layout="row">
+        <div flex="2"></div>
+        <h2 class="project-title" flex="10">{{project.title}}</h2>
+      </div>
+      <div layout="row" class="project-content">
+        <div flex></div>
+        <p class="project-desc text-hero" flex>
+          <marked-element markdown="{{project.description.md}}">
+          </marked-element>
+        </p>
+      </div>
+      <div layout="flex" layout-align="center center" class="padding-y">
+        <span class="alex-button button-alternate-1 project-link">View Project</span>
+      </div>
+    </a>
   </template>
   <script>
   (function() {

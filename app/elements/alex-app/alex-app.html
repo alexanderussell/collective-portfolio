@@ -18,6 +18,7 @@ This is a container element for your app. Feel free to extend.
         /*min-height: 100vh;*/
       }
     </style>
+    <page-title base-title="Collectively Made" divider="|" title="Hello" direction="reversed"></page-title>
     <akyral-modal id="collective-contact">
       <alex-contact-modal></alex-contact-modal>
     </akyral-modal>
@@ -26,7 +27,7 @@ This is a container element for your app. Feel free to extend.
     </div>
     <div id="main-content">
       <!-- Routes -->
-      <app-router mode="pushstate">
+      <app-router mode="pushstate" on-state-change="stateChange">
         <app-route path="portfolio/:id" element="page-portfolio-item"></app-route>
         <app-route path="/" element="page-home"></app-route>
       </app-router>
@@ -35,13 +36,29 @@ This is a container element for your app. Feel free to extend.
     <div class="container">
       <alex-footer></alex-footer>
     </div>
+    <!-- Analytics -->
+    <script type="text/javascript">
+      !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
+      analytics.load("vThHLs4qMSKncyaMJakbUzoCD7HvT0K0");
+      }}();
+    </script>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'alex-app'
+      is: 'alex-app',
+
+      /**
+       * If the current app-router state changes, this will fire.
+       */
+      stateChange: function (event) {
+        // Scroll back to the top of the page.
+        window.scroll(0,0);
+        // Fires off a virtual page view.
+        // window.analytics.page();
+      }
     });
 
   })();

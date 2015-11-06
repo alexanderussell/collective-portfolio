@@ -22,8 +22,8 @@ Page: Home (page-home)
     </div>
     <!-- End Hero -->
     <div class="layout-fill-viewport has-footer" layout="row" layout-align="center center">
-      <iron-ajax last-response="{{projects}}" auto url="http://content.collectivelymade.com/portfolio?limit=5" handle-as="json"></iron-ajax>
-      <sc-swiper flex navigation-buttons>
+      <iron-ajax last-response="{{projects}}" auto url="//content.collectivelymade.com/portfolio?limit=5" handle-as="json"></iron-ajax>
+      <sc-swiper flex navigation-buttons class="cursor-swipe">
         <template is="dom-repeat" items="{{projects}}">
           <alex-project-showcase project="{{item}}"></alex-project-showcase>
         </template>
@@ -38,6 +38,13 @@ Page: Home (page-home)
       is: 'page-home',
 
       properties: {
+      },
+
+      ready: function () {
+        // Set page title
+        document.querySelector('page-title').setAttribute('title', 'Hello');
+        // Log analytics
+        window.analytics.page(document.title);
       }
     });
   })();

@@ -1,9 +1,12 @@
 sc-swiper {
-  cursor: ew-resize;
-
   .swiper-container {
     .swiper-button-prev, .swiper-button-next {
-      padding: $base-unit;
+      bottom: 0;
+      height: 100%;
+      padding: $base-unit $sizing-unit*2;
+      position: absolute;
+      top: 0;
+      z-index: 99;
     }
 
     .swiper-button-prev {

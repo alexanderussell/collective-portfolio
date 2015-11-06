@@ -15,10 +15,19 @@ This is a container element for your app. Feel free to extend.
         display: block;
       }
     </style>
+    <iron-ajax id="requestHandler" url="//content.collectivelymade.com/portfolio" handle-as="json"></iron-ajax>
     <div layout="row" class="padding-y">
-      <div id="project-previous-link" flex="3"><a is="pushstate-anchor" href="">Previous Project</a></div>
-      <div class="text-center" flex="6">{{project.title}}</div>
-      <div id="project-next-link" class="text-right" flex="3"><a is="pushstate-anchor" href="">Next Project</a></div>
+      <div flex="3">
+        <template is="dom-if" if="{{prevProject}}">
+          <a is="pushstate-anchor" href="/portfolio/{{prevProject._id}}" id="project-previous-link" on-mouseenter="_onButtonHover" on-mouseleave="_onButtonLeave">Previous Project</a>
+        </template>
+      </div>
+      <div id="project-current-desc" class="text-center text-ellipsis" flex="6">{{projectDescription}}</div>
+      <div flex="3" class="text-right">
+        <template is="dom-if" if="{{nextProject}}">
+          <a is="pushstate-anchor"  href="/portfolio/{{nextProject._id}}" id="project-next-link" on-mouseenter="_onButtonHover" on-mouseleave="_onButtonLeave">Next Project</a>
+        </template>
+      </div>
     </div>
   </template>
   <script>
@@ -29,7 +38,62 @@ This is a container element for your app. Feel free to extend.
       is: 'alex-project-footer',
 
       properties: {
-        project: Object
+        project: {
+          type: Object,
+          observer: '_projectChanged'
+        },
+        prevProject: Object,
+        nextProject: Object,
+        projectDescription: String
+      },
+
+      _projectChanged: function (project) {
+        var el = this;
+        // Set active description
+        this.projectDescription = project.title;
+
+        // Get the previous, next projects
+        var requestHandler = this.$.requestHandler;
+
+        // Previous
+        requestHandler.params = {
+          where: JSON.stringify({ _id: { $gt: project._id } }),
+          sort: JSON.stringify({_id: 1}),
+          limit: 1
+        };
+        requestHandler.generateRequest().completes.then(function (response) {
+          el.prevProject = response.parseResponse()[0];
+        });
+
+        // Next
+        requestHandler.params = {
+          where: JSON.stringify({ _id: { $lt: project._id } }),
+          sort: JSON.stringify({_id: -1}),
+          limit: 1
+        };
+        requestHandler.generateRequest().completes.then(function (response) {
+          el.nextProject = response.parseResponse()[0];
+        });
+      },
+
+      _onButtonHover: function (event) {
+        var project = null;
+        console.log('Hovered', event);
+
+        // Determine which project we need to show
+        if(event.srcElement.id === "project-previous-link") {
+          project = this.prevProject;
+        } else {
+          project = this.nextProject;
+        }
+
+        if(!project) { return; }
+
+        this.projectDescription = project.description.md.replace(/\s+/g, " ");
+      },
+
+      _onButtonLeave: function (event) {
+        this.projectDescription = this.project.title;
       }
     });
   })();

@@ -10,6 +10,7 @@ alex-project-showcase {
   }
 
   .project-content {
+    color: $color-text;
     padding: $sizing-unit;
     position: relative;
     @include transition(all .2s $easing-swift-out);

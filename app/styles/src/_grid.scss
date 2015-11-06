@@ -1,16 +1,19 @@
 .container {
-  margin-right: auto;
+  box-sizing: border-box;
   margin-left: auto;
-
-  padding-left:  ($layout-gutter-width);
-  padding-right: ($layout-gutter-width);
+  margin-right: auto;
+  padding-left: $base-unit;
+  padding-right: $base-unit;
   width: 100%;
 
   @media (min-width: $breakpoint-tablet) {
-    width: 940px + $layout-gutter-width;
+    padding-left:  ($layout-gutter-width);
+    padding-right: ($layout-gutter-width);
+
+    width: 940px + $layout-gutter-width*2;
   }
   @media (min-width: $breakpoint-desktop) {
-    width: 1140px + $layout-gutter-width;
+    width: 1140px + $layout-gutter-width*2;
   }
 }
 
@@ -25,7 +28,7 @@
 }
 
 .layout-gutters {
-  .flex, [flex] {
+  > * {
     margin-right: $layout-gutter-width;
 
     &:last-child {

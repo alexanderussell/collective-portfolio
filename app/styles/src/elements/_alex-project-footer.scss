@@ -1,6 +1,6 @@
 alex-project-footer {
   border: solid $color-muted;
-  border-width: 2px 0;
+  border-width: $border-width 0;
   @extend .panel-margin;
 
   a {
@@ -8,6 +8,7 @@ alex-project-footer {
     color: $color-muted;
 
     &:hover {
+      background-color: transparent;
       color: $color-text;
     }
   }

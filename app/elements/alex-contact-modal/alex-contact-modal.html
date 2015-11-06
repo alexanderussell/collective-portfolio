@@ -15,31 +15,66 @@ This is a container element for your app. Feel free to extend.
       :host {
         display: block;
       }
+
+      .contact-form-slide {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
     </style>
     <h1 class="text-center margin-bottom">Let's work together</h1>
-    <div class="panel-light padding">
+    <div class="panel-light padding-panel">
       <div layout="row" layout-align="center center">
-        <form>
-          <h3>Hey there, what's your name?</h3>
-          <input type="text" name="contactName" value="">
-          <div class="margin-top" layout="row" layout-align="start center">
-            <div flex>
-              <button type="button" name="submitContact" class="alex-button button-medium button-secondary">Next</button>
+        <form method="post" action="#" data-hookform-id="5ebb81c4-eed2-4cb2-9a8e-fc8ba0f113b2">
+          <sc-swiper navigation-buttons id="contact-form-slides" options="{'effect':'fade'}" flex>
+            <div class="contact-form-slide">
+              <h3>Hey there, what's your name?</h3>
+              <input type="text" name="contactName" value="{{contactName::input}}">
+              <div class="margin-top" layout="row" layout-align="start center">
+                <div flex>
+                  <button type="button" name="submitContact" class="alex-button button-medium button-secondary">Next</button>
+                </div>
+                <div class="color-muted text-small">1/3</div>
+              </div>
             </div>
-            <div class="color-muted text-small">
-              1/3
+            <div class="contact-form-slide">
+              <h3>Hey <span>{{contactName}}</span>, what's your email address?</h3>
+              <input type="text" name="contactEmail" value="">
+              <div class="margin-top" layout="row" layout-align="start center">
+                <div flex>
+                  <button type="button" name="submitContact" class="alex-button button-medium button-secondary">Next</button>
+                </div>
+                <div class="color-muted text-small">2/3</div>
+              </div>
             </div>
-          </div>
+            <div class="contact-form-slide">
+              <h3>Let us know what you’re thinking.</h3>
+              <iron-autogrow-textarea name="contactMessage"></iron-autogrow-textarea>
+              <input type="text"  value="">
+              <div class="margin-top" layout="row" layout-align="start center">
+                <div flex>
+                  <button type="button" name="submitContact" class="alex-button button-medium button-secondary">Next</button>
+                </div>
+                <div class="color-muted text-small">3/3</div>
+              </div>
+            </div>
+          </sc-swiper>
         </form>
       </div>
     </div>
+    <!-- Load in HookForms -->
+    <script src="https://hookforms.com/api/v1/form.js"></script>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'alex-contact-modal'
+      is: 'alex-contact-modal',
+
+      properties: {
+        contactName: String
+      }
     });
   })();
   </script>

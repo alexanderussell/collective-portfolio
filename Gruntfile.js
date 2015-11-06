@@ -61,6 +61,7 @@ module.exports = function (grunt) {
           '<%= appConfig.paths.app %>/index.html',
           '<%= appConfig.paths.app %>/elements/**/*.html',
           '<%= appConfig.paths.app %>/scripts/**/*.js',
+          '<%= appConfig.paths.app %>/images/**/*.js',
           '<%= appConfig.paths.app %>/styles/dist/**/*.css'
         ]
       },
@@ -212,7 +213,7 @@ module.exports = function (grunt) {
             '.htaccess',
             // 'nginx.conf',
             '*.html',
-            'images/{,*/}*.{webp}'
+            'images/**/*'
           ]
         }, {
           expand: true,

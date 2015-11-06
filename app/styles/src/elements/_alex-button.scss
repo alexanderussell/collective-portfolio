@@ -13,11 +13,13 @@ button,
   padding: $button-padding;
   text-transform: uppercase;
 
+  @include transition(all .2s ease-in-out);
+
   &.button-secondary {
     border-color: $color-muted;
     color: $color-muted;
 
-    &:hover {
+    &:not(li):hover {
       background-color: transparent;
       border-color: $color-text;
       color: $color-text;
@@ -30,13 +32,16 @@ button,
   }
 
   &.button-medium {
-    padding: 9px 22px;
+    padding: 8px 22px;
     @extend .text-small;
   }
 
-  &:hover {
+  &:not(li):hover {
     background-color: $button-background-hover;
+    border-color: $button-background-hover;
     color: #fff;
+
+    @include transition(all .2s ease-in-out);
   }
 
   &.button-alternate-1 {

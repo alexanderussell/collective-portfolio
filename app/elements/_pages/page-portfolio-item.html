@@ -21,40 +21,44 @@ This is a container element for your app. Feel free to extend.
         width: 100%;
       }
     </style>
-    <iron-ajax last-response="{{portfolioItem}}" auto url="{{apiURL}}" handle-as="json"></iron-ajax>
+    <!-- Project Meta Data -->
+    <meta property="og:title" content="{{project.0.title}}" />
+    <meta property="og:image" content="{{project.0.title}}" />
+    <!-- End Meta Data -->
+    <iron-ajax last-response="{{project}}" auto url="{{apiURL}}" handle-as="json"></iron-ajax>
     <div class="container">
-      <alex-hero content="{{portfolioItem.0.description.md}}"></alex-hero>
+      <alex-hero content="{{project.0.description.md}}"></alex-hero>
       <template is="dom-if" if="{{isSingleImage}}">
         <div id="project-media" class="margin-y zframe-1">
-          <iron-image class="project-image-single" fade preload sizing="cover" src="{{portfolioItem.0.image.url}}"></iron-image>
+          <iron-image class="project-image-single" fade preload sizing="cover" src="{{project.0.image.url}}"></iron-image>
         </div>
       </template>
-      <div layout="row" class="layout-gutters padding-top">
-        <div flex="8" flex-sm="12">
+      <div layout="row" class="layout-gutters padding-top" layout-wrap>
+        <div flex-lg="8" flex-sm="12">
           <h4>Challenge</h4>
           <div id="project-challenge">
-            <marked-element markdown="{{portfolioItem.0.challenge.md}}"></marked-element>
+            <marked-element markdown="{{project.0.challenge.md}}"></marked-element>
           </div>
         </div>
-        <div flex="4" flex-sm="12">
+        <div flex-lg="4" flex-sm="12">
           <h4>Client</h4>
-          <p id="project-client">{{portfolioItem.0.client}}</p>
-          <alex-tag-list tags="{{portfolioItem.0.expertiseTags}}"></alex-tag-list>
+          <p id="project-client">{{project.0.client}}</p>
+          <alex-tag-list tags="{{project.0.expertiseTags}}"></alex-tag-list>
           <h4>Collaborators</h4>
           <ul class="list-no-style">
-            <template is="dom-repeat" items="{{portfolioItem.0.collaborators}}">
-              <li><span>{{item.name.first}}</span> <span>{{item.name.last}}</span></li>
+            <template is="dom-repeat" items="{{project.0.collaborators}}">
+              <li><a class="link-alternate-1" href="mailto:{{item.email}}">{{item.name.first}} {{item.name.last}}</a></li>
             </template>
           </ul>
         </div>
       </div>
       <div layout="row" layout-align="center center" class="panel-margin">
         <div>
-          <a id="project-case-study" href="{{portfolioItem.0.caseStudyURL}}" class="alex-button">Read the Case Study</a>
-          <a id="project-link" href="{{portfolioItem.0.externalURL}}" class="alex-button">Visit Site</a>
+          <a id="project-case-study" target="_blank" href="{{project.0.caseStudyURL}}" class="alex-button">Read the Case Study</a>
+          <a id="project-link" target="_blank" href="{{project.0.externalURL}}" class="alex-button">Visit Site</a>
         </div>
       </div>
-      <alex-project-footer project="{{portfolioItem.0}}"></alex-project-footer>
+      <alex-project-footer project="{{project.0}}"></alex-project-footer>
     </div>
   </template>
   <script>
@@ -67,8 +71,9 @@ This is a container element for your app. Feel free to extend.
       properties: {
         id: String,
 
-        portfolioItem: {
-          type: Array
+        project: {
+          type: Array,
+          observer: '_projectChanged'
         },
 
         apiURL: {
@@ -78,12 +83,18 @@ This is a container element for your app. Feel free to extend.
 
         isSingleImage: {
           type: Boolean,
-          computed: '_isSingleImage(portfolioItem)'
+          computed: '_isSingleImage(project)'
         }
       },
 
+      _projectChanged: function (project) {
+        // Set page title
+        document.querySelector('page-title').setAttribute('title', project[0].title);
+        window.analytics.page(document.title);
+      },
+
       _getProjectURL: function (id) {
-        return 'http://content.collectivelymade.com/portfolio?where={"_id": "' + id + '"}';
+        return '//content.collectivelymade.com/portfolio?where={"_id": "' + id + '"}';
       },
 
       _isSingleImage: function (project) {

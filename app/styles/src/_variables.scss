@@ -19,6 +19,7 @@ $color-text:          $color-secondary;
 $base-unit:           8px;
 $sizing-unit:         $base-unit*3;
 $border-radius:       3px;
+$border-width:        1px;
 $layout-gutter-width: 45px;
 
 // TYPOGRAPHY
@@ -49,5 +50,5 @@ $button-background:       transparent;
 $button-background-hover: $color-primary;
 $button-color:            $color-primary;
 $button-padding:          15px 30px;
-$button-border:           1px solid $color-primary;
+$button-border:           $border-width solid $color-primary;
 $button-border-radius:    24px;
